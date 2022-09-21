@@ -26,6 +26,9 @@ RUN pip install pylint
 RUN pip install ipykernel jupyterlab
  
 RUN pip install nltk gensim
+
+RUN python3 -c "import nltk ; nltk.download('punkt')"
+
 #CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root","--NotebookApp.token='pass'" ]
 CMD ["jupyter-lab",  "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root","--NotebookApp.token='pass'" ]
 
