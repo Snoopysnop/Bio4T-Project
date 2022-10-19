@@ -1,11 +1,22 @@
 from pickle import FALSE, TRUE
 from bs4 import BeautifulSoup
+from googlesearch import search
 from urllib.request import Request, urlopen
+import requests
 import re
 
-req = [Request('https://nf-co.re/eager'),Request('https://fr.wikipedia.org/wiki/Feu')]
-wordOne = ["nf-core","feu"]
-wordTwo = ["pipeline","domestication"]
+# get the first "stop" url for a request with both tools 
+def getLinks(tool1, tool2, stop):
+    query = f"\"{tool1}\" \"{tool2}\""
+    return list(search(query, stop=stop))
+
+# WIP - get the readme page in github of both tools
+def getGithubReadme(tool1, tool2):
+    query = f"\"{tool1}\" \"{tool2}\" \"github\" \"repository\""
+    url = list(search(query, stop=1))[0]
+
+    res = requests.get(url + "/blob/main/README.md")
+    return res.text
 
 # Function to find every index of start and end 
 def findSentence(indexOcc, text:str):
@@ -62,13 +73,13 @@ def findSentence(indexOcc, text:str):
             if( (debut,fin) not in index):
                 #sentences.append(text[debut:fin+1])
                 index.append((debut,fin+1))
-    """for i in sentences:
-        print(i)"""
+    #for i in index:
+    #    print(i)
     return index
 
 # extract the sentences of url where both wordOne and wordTwo appear
 def htmlToString(url:str,wordOne:str,wordTwo:str):
-    res = []
+    res = {}
 
     html_page = urlopen(url).read()
     soup = BeautifulSoup(html_page, 'html.parser')
@@ -89,18 +100,46 @@ def htmlToString(url:str,wordOne:str,wordTwo:str):
     indexSecondWord = findSentence(allOccDocker,text)
 
     # the 2 words are in the same sentence
-    for indexFirst in indexFirstWord :
+
+    for indexFirst in indexFirstWord:
         if indexFirst in indexSecondWord:
-            res.append(text[indexFirst[0]:indexFirst[1]])
+            if text[indexFirst[0]:indexFirst[1]] not in res.keys():
+                key = (text[indexFirst[0]:indexFirst[1]])
+                res[key] = 1
+            else:
+                key = (text[indexFirst[0]:indexFirst[1]])
+                res[key] = res.get(key)+1 
+                
     return res
 
-for i in htmlToString(req[0],wordOne[0],wordTwo[0]):
-    print(i)
 
-#for i in htmlToString(req[1],wordOne[1],wordTwo[1]):
-#    print(i)
+#Scoring by using sentences were the both tools appear   (actually coef 6, can be change)
+def shittyScoring(dictionnaire):
+    actualScore = 0
+    for i in dictionnaire:
+        actualScore += dictionnaire[i]*6
+    return actualScore
+
+
+# basic data to test
+req = [Request('https://nf-co.re/eager'),Request('https://fr.wikipedia.org/wiki/Feu')]
+wordOne = ["nf-core","feu","BBMap"]
+wordTwo = ["docker","domestication","CoverM"]
+reqList = getLinks("BBMap", "CoverM", 5)
+#getGithubReadme("Trimmomatic", "BBMap")
+
+
+# little part to show the result
+"""dictio = htmlToString(req[0],wordOne[0],wordTwo[0])
+for i in (dictio):
+    print("[ \"" ,i , "\" ]", " apparait : " , dictio[i], " fois")
+print(shittyScoring(dictio))"""
+        
+
 
 #TODO => faire les scores en fonction de l'appartenance au parti du texte
-#           meme phrase  = coef 6
 #           dans les memes 20% du text = coef 3
 #           ect
+
+#DONE => meme phrase  = coef 6
+
