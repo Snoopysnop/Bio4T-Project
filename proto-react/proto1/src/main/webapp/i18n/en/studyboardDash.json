@@ -1,0 +1,31 @@
+{
+  "gatewayApp": {
+    "studyboardDash": {
+      "home": {
+        "title": "Dashes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Dash",
+        "createOrEditLabel": "Create or edit a Dash",
+        "notFound": "No Dashes found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Dash {{ id }}?"
+      },
+      "detail": {
+        "title": "Dash"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "project": "Project",
+      "user": "User"
+    }
+  },
+  "studyboardApp": {
+    "studyboardDash": {
+      "created": "A new Dash is created with identifier {{ param }}",
+      "updated": "A Dash is updated with identifier {{ param }}",
+      "deleted": "A Dash is deleted with identifier {{ param }}"
+    }
+  }
+}

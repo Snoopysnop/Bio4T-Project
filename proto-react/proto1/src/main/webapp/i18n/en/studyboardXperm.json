@@ -1,0 +1,28 @@
+{
+  "gatewayApp": {
+    "studyboardXperm": {
+      "home": {
+        "title": "Xperms",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Xperm",
+        "createOrEditLabel": "Create or edit a Xperm",
+        "notFound": "No Xperms found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Xperm {{ id }}?"
+      },
+      "detail": {
+        "title": "Xperm"
+      },
+      "id": "ID",
+      "label": "Label"
+    }
+  },
+  "studyboardApp": {
+    "studyboardXperm": {
+      "created": "A new Xperm is created with identifier {{ param }}",
+      "updated": "A Xperm is updated with identifier {{ param }}",
+      "deleted": "A Xperm is deleted with identifier {{ param }}"
+    }
+  }
+}

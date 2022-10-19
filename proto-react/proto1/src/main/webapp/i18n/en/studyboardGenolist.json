@@ -1,0 +1,31 @@
+{
+  "gatewayApp": {
+    "studyboardGenolist": {
+      "home": {
+        "title": "Genolists",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Genolist",
+        "createOrEditLabel": "Create or edit a Genolist",
+        "notFound": "No Genolists found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Genolist {{ id }}?"
+      },
+      "detail": {
+        "title": "Genolist"
+      },
+      "id": "ID",
+      "title": "Title",
+      "memberCount": "Member Count",
+      "creationDate": "Creation Date",
+      "comparison": "Comparison"
+    }
+  },
+  "studyboardApp": {
+    "studyboardGenolist": {
+      "created": "A new Genolist is created with identifier {{ param }}",
+      "updated": "A Genolist is updated with identifier {{ param }}",
+      "deleted": "A Genolist is deleted with identifier {{ param }}"
+    }
+  }
+}
