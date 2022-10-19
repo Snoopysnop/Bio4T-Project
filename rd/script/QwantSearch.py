@@ -7,15 +7,22 @@ def getLinks(tool1, tool2):
     query = f"\"{tool1}\" \"{tool2}\""
 
     
-    url = f"https://api.qwant.com/v3/search/web?q={query}&count={10}&locale=en_US"
+    url = f"https://api.qwant.com/v3/search/web?q={query}&count={10}&locale=en_US&timeout=30"
     res = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+
     results = res.json()["data"]["result"]["items"]["mainline"][0]["items"]
     
     urls = []
     for result in results:
-        urls.append(result["url"])
+        u = result["url"]
+        if(not("bing" in u)):
+            urls.append(u)
+            
+    if(urls==[]):
+        print("Timed out !")     
+   
     return urls
 
 
 
-print(getLinks("BBMap", "CoverM"))
+print(getLinks("CoverM", "BBMap"))
