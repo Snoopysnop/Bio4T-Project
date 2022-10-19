@@ -25,4 +25,4 @@ def getLinks(tool1, tool2):
 
 
 
-print(getLinks("CoverM", "BBMap"))
+#print(getLinks("CoverM", "BBMap"))

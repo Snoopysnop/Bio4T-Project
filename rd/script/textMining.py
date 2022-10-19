@@ -4,9 +4,11 @@ from googlesearch import search
 from urllib.request import Request, urlopen
 import requests
 import re
+import QwantSearch
 
 # get the first "stop" url for a request with both tools 
-def getLinks(tool1, tool2, stop):
+# it use Google, but we will skip it to Qwant
+def getURL(tool1, tool2, stop):
     query = f"\"{tool1}\" \"{tool2}\""
     return list(search(query, stop=stop))
 
@@ -100,7 +102,6 @@ def htmlToString(url:str,wordOne:str,wordTwo:str):
     indexSecondWord = findSentence(allOccDocker,text)
 
     # the 2 words are in the same sentence
-
     for indexFirst in indexFirstWord:
         if indexFirst in indexSecondWord:
             if text[indexFirst[0]:indexFirst[1]] not in res.keys():
@@ -110,36 +111,35 @@ def htmlToString(url:str,wordOne:str,wordTwo:str):
                 key = (text[indexFirst[0]:indexFirst[1]])
                 res[key] = res.get(key)+1 
                 
-    return res
+    return (res,indexFirstWord,indexSecondWord)
 
 
 #Scoring by using sentences were the both tools appear   (actually coef 6, can be change)
 def shittyScoring(dictionnaire):
     actualScore = 0
-    for i in dictionnaire:
-        actualScore += dictionnaire[i]*6
+    for i in dictionnaire[0]:
+        actualScore += dictionnaire[0][i]*(pow(2,6)) # ou 64
+    actualScore += len(dictionnaire[1])*(4) + len(dictionnaire[2])*(4)
     return actualScore
 
 
 # basic data to test
-req = [Request('https://nf-co.re/eager'),Request('https://fr.wikipedia.org/wiki/Feu')]
+target = ['https://nf-co.re/eager','https://fr.wikipedia.org/wiki/Feu']
 wordOne = ["nf-core","feu","BBMap"]
 wordTwo = ["docker","domestication","CoverM"]
-reqList = getLinks("BBMap", "CoverM", 5)
+#reqList = getURL("Trimmomatic", "BBMap", 5) 
+qwantList = QwantSearch.getLinks("Trimmomatic", "BBMap") #Attention on tombe sur des liens pubs
 #getGithubReadme("Trimmomatic", "BBMap")
 
-
 # little part to show the result
-"""dictio = htmlToString(req[0],wordOne[0],wordTwo[0])
-for i in (dictio):
-    print("[ \"" ,i , "\" ]", " apparait : " , dictio[i], " fois")
-print(shittyScoring(dictio))"""
-        
+def showMe(url:str,wordOne:str,wordTwo:str):
+    req = Request(url)
+    dictioAndIndex = htmlToString(req,wordOne,wordTwo)
+    #for i in (dictioAndIndex[0]):
+    #    print("[ \"" ,i , "\" ]", " apparait : " , dictioAndIndex[0][i], " fois")
+    print("score de ",wordOne, " et ",wordTwo, " = ", shittyScoring(dictioAndIndex), " sur ", url)
 
+showMe(target[1],wordOne[1],wordTwo[1])
 
 #TODO => faire les scores en fonction de l'appartenance au parti du texte
-#           dans les memes 20% du text = coef 3
-#           ect
-
-#DONE => meme phrase  = coef 6
 
