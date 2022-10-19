@@ -1,0 +1,30 @@
+{
+  "gatewayApp": {
+    "studyboardOrtholog": {
+      "home": {
+        "title": "Orthologs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Ortholog",
+        "createOrEditLabel": "Create or edit a Ortholog",
+        "notFound": "No Orthologs found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Ortholog {{ id }}?"
+      },
+      "detail": {
+        "title": "Ortholog"
+      },
+      "id": "ID",
+      "name": "Name",
+      "source": "Source",
+      "aliasList": "Alias List"
+    }
+  },
+  "studyboardApp": {
+    "studyboardOrtholog": {
+      "created": "A new Ortholog is created with identifier {{ param }}",
+      "updated": "A Ortholog is updated with identifier {{ param }}",
+      "deleted": "A Ortholog is deleted with identifier {{ param }}"
+    }
+  }
+}
