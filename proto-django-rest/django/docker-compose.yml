@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  django-api1:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django-api1:/app
+    command: >
+      sh -c "echo 'starting' && sleep 60 && python manage.py migrate cauth && python manage.py migrate microapi
+             python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=supersecretpassword
+    depends_on:
+      - db-django-api1
+    links:
+      - db-django-api1:db  
+
+  db-django-api1:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=supersecretpassword
