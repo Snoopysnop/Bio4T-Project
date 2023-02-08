@@ -5,6 +5,9 @@ from urllib.request import Request, urlopen
 import requests
 import re
 import QwantSearch
+from nltk.sentiment import SentimentIntensityAnalyzer
+
+sia = SentimentIntensityAnalyzer()
 
 # get the first "stop" url for a request with both tools 
 # it use Google, but we will skip it to Qwant
@@ -116,30 +119,55 @@ def htmlToString(url:str,wordOne:str,wordTwo:str):
 
 #Scoring by using sentences were the both tools appear   (actually coef 6, can be change)
 def shittyScoring(dictionnaire):
+    res = sia.polarity_scores("")
+    #print(res)
+
+
+
     actualScore = 0
     for i in dictionnaire[0]:
+        res = sia.polarity_scores(i)
+        print(res)
         actualScore += dictionnaire[0][i]*(pow(2,6)) # ou 64
     actualScore += len(dictionnaire[1])*(4) + len(dictionnaire[2])*(4)
     return actualScore
 
-
-# basic data to test
-target = ['https://nf-co.re/eager','https://fr.wikipedia.org/wiki/Feu']
-wordOne = ["nf-core","feu","BBMap"]
-wordTwo = ["docker","domestication","CoverM"]
-#reqList = getURL("Trimmomatic", "BBMap", 5) 
-qwantList = QwantSearch.getLinks("Trimmomatic", "BBMap") #Attention on tombe sur des liens pubs
-#getGithubReadme("Trimmomatic", "BBMap")
-
 # little part to show the result
 def showMe(url:str,wordOne:str,wordTwo:str):
-    req = Request(url)
+    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     dictioAndIndex = htmlToString(req,wordOne,wordTwo)
     #for i in (dictioAndIndex[0]):
     #    print("[ \"" ,i , "\" ]", " apparait : " , dictioAndIndex[0][i], " fois")
     print("score de ",wordOne, " et ",wordTwo, " = ", shittyScoring(dictioAndIndex), " sur ", url)
 
-showMe(target[1],wordOne[1],wordTwo[1])
 
-#TODO => faire les scores en fonction de l'appartenance au parti du texte
+def showAll(urls, wordOne,wordTwo):
+    for url in urls:
+        showMe(url,wordOne,wordTwo)
+
+
+##
+#The starter function with only 2 tools in parameters
+def twoToolsToAnalyse(tool1, tool2):
+    urls = QwantSearch.getLinks(tool1, tool2)
+    showAll(urls,tool1,tool2)
+
+
+
+
+
+#### TEST PART ####
+'''
+# basic data to test
+target = ['https://nf-co.re/eager','https://fr.wikipedia.org/wiki/Feu']
+wordOne = ["nf-core","feu","BBMap"]
+wordTwo = ["docker","domestication","CoverM","Trimmomatic"]
+#reqList = getURL("Trimmomatic", "BBMap", 5) 
+qwantList = QwantSearch.getLinks("Trimmomatic", "BBMap") #Attention on tombe sur des liens pubs
+#getGithubReadme("Trimmomatic", "BBMap")
+
+#showAll(qwantList,wordOne[2],wordTwo[3])
+#showMe(target[0],wordOne[0],wordTwo[0])
+#showMe(target[1],wordOne[1],wordTwo[1])
+'''
 
