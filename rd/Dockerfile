@@ -1,13 +1,13 @@
 FROM python:3.9.7-slim-bullseye
-LABEL maintainer="FM <fjrmoreews@gmail.com>"
-RUN apt-get update
+LABEL    maintainer="FM <fjrmoreews@gmail.com>"
+RUN apt-get   update
 RUN apt-get install -y vim mlocate  curl python3-pip  zip unzip ;   \
    pip install numpy --upgrade ; pip install pandas  
 
 WORKDIR /work
 RUN    chmod -R 777 /work
 
-RUN  apt-get install -y  libcurl4-gnutls-dev librtmp-dev  graphviz
+RUN  apt-get install   -y  libcurl4-gnutls-dev librtmp-dev  graphviz
  
 RUN pip install pycurl  pypath-omnipath==0.11.44
 RUN pip install  rdflib   rdflib-jsonld pyrdfa3   simplified_scrapy  rdflib-orm graphviz
@@ -25,7 +25,8 @@ RUN pip install pylint
  
 RUN pip install ipykernel jupyterlab
  
-RUN pip install nltk gensim
+RUN pip install nltk gensim 
+RUN pip install py2neo
 
 RUN python3 -c "import nltk ; nltk.download('punkt')"
 
