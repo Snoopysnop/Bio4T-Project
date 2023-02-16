@@ -9,6 +9,25 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 
 sia = SentimentIntensityAnalyzer()
 
+sentenceList = []
+
+PositivWords = {"work","collude","conspire","cooperate","hook up","participate","coact","concert","concur","function","go","run","operate",
+              "aid","back","benefits","boost","expedite","facilitate","reinforce","support","sustain","abet",
+              "collaborate","further","hype","plug","puff","push","relieve","serve","stump","thump","utilize","apply",
+              "exploit","employ","harness","operate","exercise","wield","manipulate"}
+
+
+NegativWords = {"ignore","neglect","missuse","misapply","block","check","delay","discourag","halt","handicap","hinder","hurt","impede","injure","obstruct","prevent","stop","undermine","conceal","frustrate","hide","thwart"}
+
+workWithDic = {}
+for word in PositivWords:
+    workWithDic[word] = 3
+
+for word in NegativWords:
+    workWithDic[word] = -3
+
+sia.lexicon.update(workWithDic)
+
 # get the first "stop" url for a request with both tools 
 # it use Google, but we will skip it to Qwant
 def getURL(tool1, tool2, stop):
@@ -78,8 +97,7 @@ def findSentence(indexOcc, text:str):
             if( (debut,fin) not in index):
                 #sentences.append(text[debut:fin+1])
                 index.append((debut,fin+1))
-    #for i in index:
-    #    print(i)
+    sentenceList.append(index)
     return index
 
 # extract the sentences of url where both wordOne and wordTwo appear
@@ -120,10 +138,6 @@ def htmlToString(url:str,wordOne:str,wordTwo:str):
 #Scoring by using sentences were the both tools appear   (actually coef 6, can be change)
 def shittyScoring(dictionnaire):
     res = sia.polarity_scores("")
-    #print(res)
-
-
-
     actualScore = 0
     for i in dictionnaire[0]:
         res = sia.polarity_scores(i)
@@ -152,7 +166,7 @@ def twoToolsToAnalyse(tool1, tool2):
     urls = QwantSearch.getLinks(tool1, tool2)
     showAll(urls,tool1,tool2)
 
-
+twoToolsToAnalyse("CoverM","BBMap")
 
 
 
