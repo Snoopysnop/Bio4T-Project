@@ -1,8 +1,7 @@
 import json
 import py2neo
-# import textMiningDef
-import requests
 from nltk import tokenize
+from pmc_api import get_number_of_results
 
 
 def connect_to_neo4j(user, password):
@@ -72,6 +71,21 @@ def get_sentences_containing_n_words(sentence_list: list[str], words: list[str])
             res.append(sentence)
     return res
 
+def get_compatible_tools(graph):
+    return graph.run("MATCH (a:Tool)-[:isCompatible]->(b:Tool) RETURN id(a), a.name, id(b), b.name").data()
+
+def create_json():
+    g = connect_to_neo4j("neo4j", "bio4tdummy")
+    req_data = get_compatible_tools(g)
+    list_res = []
+    for dictionary in req_data:
+        list_res.append({
+            "tool1": dictionary["id(a)"],
+            "tool2": dictionary["id(b)"],
+            "score": get_number_of_results(dictionary["a.name"], dictionary["b.name"])
+        })
+    with open("./data/output_scoring.json", "w") as fout:
+        json.dump(list_res, fout)
 
 if __name__ == "__main__":
     g = connect_to_neo4j("neo4j", "bio4tdummy")

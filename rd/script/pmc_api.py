@@ -43,6 +43,10 @@ def get_scientific_article(article_id):
     except ElementTree.ParseError:
         return ''
 
+def get_number_of_results(tool_name_1, tool_name_2):
+    json_res = make_pmc_api_request(tool_name_1, tool_name_2)
+    return json_res['hitCount']
+
 def access_to_n_first_articles(tool_name_1, tool_name_2, n = 10):
     """Get the content of the n first article
 
