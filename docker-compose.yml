@@ -1,0 +1,32 @@
+version: "3"
+services:
+
+  neo4j_dummy:
+    container_name: neo4j_dummy
+    image: neo4j:4.4.3-enterprise
+    volumes:
+      - "./data:/var/lib/neo4j/import"
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: 'yes'
+      NEO4J_AUTH: "neo4j/bio4tdummy"
+      NEO4JLABS_PLUGINS: '["apoc"]'
+      NEO4J_apoc_import_file_enabled: 'true'
+
+  interface_bio4t:
+    container_name: interface_bio4t_container
+    image: interface_bio4t:django
+    build: .
+    volumes:
+      - ./interface:/django
+      - ./databaseUtils:/django/databaseUtils
+    ports:
+      - "8000:8000"
+    command: bash -c 
+      "python manage.py runserver 0.0.0.0:8000"
+    links:
+      - neo4j_dummy:db
+    depends_on:
+      - "neo4j_dummy"

@@ -1,0 +1,29 @@
+{
+  "gatewayApp": {
+    "studyboardBDataref": {
+      "home": {
+        "title": "B Datarefs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new B Dataref",
+        "createOrEditLabel": "Create or edit a B Dataref",
+        "notFound": "No B Datarefs found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete B Dataref {{ id }}?"
+      },
+      "detail": {
+        "title": "B Dataref"
+      },
+      "id": "ID",
+      "reflist": "Reflist",
+      "date": "Date"
+    }
+  },
+  "studyboardApp": {
+    "studyboardBDataref": {
+      "created": "A new B Dataref is created with identifier {{ param }}",
+      "updated": "A B Dataref is updated with identifier {{ param }}",
+      "deleted": "A B Dataref is deleted with identifier {{ param }}"
+    }
+  }
+}

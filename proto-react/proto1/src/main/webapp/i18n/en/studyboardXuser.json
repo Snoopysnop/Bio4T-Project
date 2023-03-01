@@ -1,0 +1,32 @@
+{
+  "gatewayApp": {
+    "studyboardXuser": {
+      "home": {
+        "title": "Xusers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Xuser",
+        "createOrEditLabel": "Create or edit a Xuser",
+        "notFound": "No Xusers found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Xuser {{ id }}?"
+      },
+      "detail": {
+        "title": "Xuser"
+      },
+      "id": "ID",
+      "name": "Name",
+      "project": "Project",
+      "dash": "Dash",
+      "dataentity": "Dataentity",
+      "group": "Group"
+    }
+  },
+  "studyboardApp": {
+    "studyboardXuser": {
+      "created": "A new Xuser is created with identifier {{ param }}",
+      "updated": "A Xuser is updated with identifier {{ param }}",
+      "deleted": "A Xuser is deleted with identifier {{ param }}"
+    }
+  }
+}
