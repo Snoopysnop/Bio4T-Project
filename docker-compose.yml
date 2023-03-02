@@ -4,7 +4,6 @@ services:
   proxy:
     build: "."
     ports: 
-      - "80:80"
       - "443:443"
     depends_on: 
       - "flask"
@@ -21,7 +20,7 @@ services:
     build: "./frontend"
     container_name: react
     ports: 
-      - "80:80"
+      - "8080:80"
 
   neo4j:
     container_name: neo4j
