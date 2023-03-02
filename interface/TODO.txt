@@ -1,2 +1,0 @@
-Texte à l'intérieur des nœuds
-Vue plus détaillée dans le modal

@@ -1,6 +1,0 @@
-# Python Compiled files
-*.pyc
-__pycache__/
-
-# SQLite Database
-*.sqlite3
