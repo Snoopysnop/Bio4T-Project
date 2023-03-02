@@ -1,0 +1,13 @@
+
+/* fm */
+@mixin center-content() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* */
+
+.footer {
+ @include center-content();
+  height: 50px;
+}

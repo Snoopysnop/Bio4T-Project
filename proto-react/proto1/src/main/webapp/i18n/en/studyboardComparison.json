@@ -1,0 +1,31 @@
+{
+  "gatewayApp": {
+    "studyboardComparison": {
+      "home": {
+        "title": "Comparisons",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Comparison",
+        "createOrEditLabel": "Create or edit a Comparison",
+        "notFound": "No Comparisons found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Comparison {{ id }}?"
+      },
+      "detail": {
+        "title": "Comparison"
+      },
+      "id": "ID",
+      "title": "Title",
+      "genolist": "Genolist",
+      "condition": "Condition",
+      "project": "Project"
+    }
+  },
+  "studyboardApp": {
+    "studyboardComparison": {
+      "created": "A new Comparison is created with identifier {{ param }}",
+      "updated": "A Comparison is updated with identifier {{ param }}",
+      "deleted": "A Comparison is deleted with identifier {{ param }}"
+    }
+  }
+}

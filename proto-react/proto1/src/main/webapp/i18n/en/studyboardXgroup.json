@@ -1,0 +1,29 @@
+{
+  "gatewayApp": {
+    "studyboardXgroup": {
+      "home": {
+        "title": "Xgroups",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Xgroup",
+        "createOrEditLabel": "Create or edit a Xgroup",
+        "notFound": "No Xgroups found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Xgroup {{ id }}?"
+      },
+      "detail": {
+        "title": "Xgroup"
+      },
+      "id": "ID",
+      "name": "Name",
+      "user": "User"
+    }
+  },
+  "studyboardApp": {
+    "studyboardXgroup": {
+      "created": "A new Xgroup is created with identifier {{ param }}",
+      "updated": "A Xgroup is updated with identifier {{ param }}",
+      "deleted": "A Xgroup is deleted with identifier {{ param }}"
+    }
+  }
+}
