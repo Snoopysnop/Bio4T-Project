@@ -152,6 +152,40 @@ def importation(ip, user, password, file):
             {batchSize:1000, iterateList:true}) YIELD timeTaken, batches, committedOperations RETURN timeTaken, batches, committedOperations
         """
     res = graph_db.run(commande)
+    
+    graph_db.run(""" 
+    MATCH (output:IO)<-[:outputOf]-(f:Function)<-[:inputOf]-(input:IO), (t:Tool)-[:hasFunction]->(f)
+    MERGE (ct:CompatibleTool {name: t.name})
+        ON CREATE
+            SET ct.input = [input.term],
+                ct.output = [output.term]
+        ON MATCH
+            SET ct.input = CASE WHEN input.term IN ct.intput THEN ct.input ELSE ct.input + [input.term] END,
+                ct.output = CASE WHEN output.term IN ct.output THEN ct.output ELSE ct.output + [output.term] END
+    """)
+
+    graph_db.run(""" 
+    MATCH (outputFinal:IO)<-[:outputOf]-(f1:Function)<-[:inputOf]-(inout:IO)<-[:outputOf]-(f2:Function)<-[:inputOf]-(inputInit:IO),
+    (t1:Tool)-[:hasFunction]->(f1), (t2:Tool)-[:hasFunction]->(f2),  (ct1:CompatibleTool), (ct2:CompatibleTool)
+    WHERE ct1.name = t1.name AND ct2.name = t2.name AND t1<>t2
+    MERGE (ct1)-[:isCompatible {score: 0}]->(ct2)
+    """)
+
+    # graph_db.run("""MATCH (a:Tool)-[:hasFunction]->(:Function)-[:outputOf]->(inout:IO)-[:inputOf]->(:Function)<-[:hasFunction]-(b:Tool)
+    #         WHERE a<>b
+    #         MERGE (ct1:CompatibleTool {name: a.name})
+    #             ON CREATE 
+    #                 SET ct1.output = [inout.term],
+    #                     ct1.input = []
+    #             ON MATCH
+    #                 SET ct1.output = CASE WHEN inout.term IN ct1.output THEN ct1.output ELSE ct1.output + [inout.term] END
+    #         MERGE (ct2:CompatibleTool {name: b.name})
+    #             ON CREATE 
+    #                 SET ct2.input = [inout.term],
+    #                     ct2.output = []
+    #             ON MATCH
+    #                 SET ct2.input = CASE WHEN inout.term IN ct2.input THEN ct2.input ELSE ct2.input + [inout.term] END
+    #         MERGE (ct1)-[:isCompatible {score: 0}]->(ct2)""")
     print("Importation terminée :")
     print(res.to_table())
 
@@ -160,6 +194,7 @@ def clear_database(ip, user, password):
     graph_db = Graph(ip, auth=(user, password))
     res = graph_db.run(
         """CALL apoc.periodic.commit("MATCH (n) DETACH DELETE n RETURN Count(*) LIMIT 10000", {limit:10000});""")
+
 
 
 if __name__ == "__main__":
