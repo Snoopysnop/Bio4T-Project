@@ -1,6 +1,29 @@
 import sys
 import json
+import requests
 
+def toolDetail(tool):
+    url = "http://bio.tools/api/t/"
+    request = requests.get(
+        url + tool,
+        headers={
+            "Accept": "application/json",
+        }
+    )
+
+    return request.json()
+
+
+def toolDetailB(toolID):
+    url = "https://bio.tools/api/t?id=xconnector"
+    request = requests.get(
+        url,
+        headers={
+            "Accept": "application/json",
+        }
+    )
+
+    return request.json()
 
 
 def getAllTools(file):
@@ -22,7 +45,26 @@ def getAllTools(file):
 
 
 
+"""
+f = open("co_publications.json", "r")
+data = eval(f.read())
+f.close()
 
+print(type(data))
+"""
 
+"""
+f = open("../../../data/data.json", "r")
+data = json.load(f)
+l = [
+        {"tool1":"2600","tool2":"2622","score":65},
+        {"tool1":"2681","tool2":"2684","score":65},
+        {"tool1":"2681","tool2":"2697","score":65}
+    ]
 
-print(getAllTools("../../../data/data.json"))
+for tool in data["list"]:
+    if(tool["name"] == "PRISM"):
+        print(tool["biotoolsID"])
+"""
+
+print(toolDetail("PRISM"))

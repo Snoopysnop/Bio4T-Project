@@ -32,12 +32,8 @@ def getRelatedTools(tool, tools, to):
         print()
         sys.stdout.write("\rtimeout")
         sys.stdout.flush()
-        if not to:
-            time.sleep(10)
-            getRelatedTools(tool, tools, True)
-        else:
-            print("\nRetry after 12h")
-            sys.exit()
+        time.sleep(10)
+        getRelatedTools(tool, tools, True)
 
     try:
         request = pytrends.related_queries()
@@ -131,7 +127,6 @@ def buildDictFromSave():
         sys.stdout.write(
             f"\r|{percent * '▉'}{(100 - percent) * '.'}| {percent}% {tool}")
         sys.stdout.flush()
-
 
 
 def clean(d):
