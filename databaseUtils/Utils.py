@@ -1,7 +1,7 @@
 from py2neo import *
 import json
 
-from databaseUtils.Request_builder import build_request_toolList, Requete
+from Request_builder import build_request_toolList, Requete
 
 
 class Param:
@@ -44,6 +44,19 @@ class Utils:
         requete = Requete(param)
         result = graph_db.run(requete.creer_Requete())
         return result.data()
+    
+    def request_topicsList(self):
+        graph_db = self.connect()
+        requete = Requete(None)
+        result = graph_db.run(requete.getAllTopic())
+        return result.data()
+    
+    def request_topicsListWithFilter(self,filter):
+        #TODO vérifier le paramètre pour éviter l'injection de code
+        graph_db = self.connect()
+        requete = Requete(None)
+        result = graph_db.run(requete.getAllTopicsWithFilter(filter))
+        return result.data()
 
     def request(self, req):
         graph_db = self.connect()
@@ -52,5 +65,5 @@ class Utils:
 
 
 if __name__ == "__main__":
-    utils = Utils("bolt://db:7687", "neo4j", "bio4tdummy")
-    print(utils.request_toolList([1, 2]))
+    utils = Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
+    print(utils.request_topicsListWithFilter('bio'))
