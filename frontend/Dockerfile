@@ -1,6 +1,6 @@
 FROM node:17-alpine as build
 
-WORKDIR /usr/local/app
+WORKDIR /usr/local/app/frontend
 
 COPY . .
 
@@ -14,8 +14,8 @@ WORKDIR /usr/share/nginx/html
 
 RUN rm -rf ./*
 
-COPY --from=build /usr/local/app/build . 
+COPY --from=build /usr/local/app/frontend/build . 
 
-COPY --from=build /usr/local/app/conf /etc/nginx
+COPY --from=build /usr/local/app/frontend/conf /etc/nginx
 
 EXPOSE 80

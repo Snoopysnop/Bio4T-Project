@@ -89,6 +89,25 @@ class Requete:
             """
         return self.requete
 
+    # Renvoie une liste de tous les topics des compatiblesTools
+    def getAllTopics(self):
+        return """
+        MATCH (ct:CompatibleTool)
+        UNWIND ct.topics AS topic
+        WITH COLLECT(DISTINCT topic) AS topicsSet
+        RETURN topicsSet AS topicsList
+        """
+    
+    def getAllTopicsWithFilter(self, filter):
+        return f"""
+        MATCH (ct:CompatibleTool)
+        UNWIND ct.topics AS topic
+        WITH topic
+        WHERE toLower(topic) CONTAINS '{filter}'
+        WITH COLLECT(DISTINCT topic) AS topicsSet
+        RETURN topicsSet AS topicsList
+        """
+
 
 def build_request_toolList():
     return """

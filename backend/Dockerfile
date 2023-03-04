@@ -1,6 +1,6 @@
 FROM python:latest
 
-WORKDIR /usr/local/app
+WORKDIR /usr/local/app/backend
 
 COPY . .
 

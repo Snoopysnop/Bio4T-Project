@@ -23,10 +23,8 @@ def create_app():
         return data['json']['title']'''
         context = request.get_json()["json"]
         parameters = databaseUtils.Param(input=context['input'], output=context['output'], limit=context['limit'], depth=context['depth'])
-        builder = request_Builder.Requete(parameters)
-        result = builder.creer_Requete()
-        #utils = create_utils()
-        #connect = utils.connect()
+        utils = create_utils()
+        result = utils.request_workflow(parameters)
         #connect.nodes[1234]
         # print("La requête : ")
         # print(builder.requete)
