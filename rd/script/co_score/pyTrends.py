@@ -75,7 +75,7 @@ def buildDict():
 
         d.update(res)
 
-        f = open("save/save.json", "w")
+        f = open("related_tools.json", "w")
         f.write(str(d))
         f.close()
 
@@ -88,14 +88,16 @@ def buildDict():
             f"\r|{percent * '▉'}{(100 - percent) * '.'}| {percent}% {tool}")
         sys.stdout.flush()
 
+    """
     d = clean(d)
 
     f = open("related_tools.json", "w")
     f.write(str(d))
+    """
 
 
 def buildDictFromSave():
-    f = open("save/save.json", "r")
+    f = open("related_tools.json", "r")
     d = eval(f.read())
     f.close()
 
@@ -115,7 +117,7 @@ def buildDictFromSave():
 
         d.update(res)
 
-        f = open("save/save.json", "w")
+        f = open("related_tools.json", "w")
         f.write(str(d))
         f.close()
 
@@ -127,6 +129,7 @@ def buildDictFromSave():
         sys.stdout.write(
             f"\r|{percent * '▉'}{(100 - percent) * '.'}| {percent}% {tool}")
         sys.stdout.flush()
+
 
 
 def clean(d):
