@@ -1,10 +1,3 @@
-import json
-import sys
-
-co_publications = {}
-related_tools = {}
-
-
 def relatedQueryScore(toolA, toolB):
     global related_tools
 
@@ -49,6 +42,8 @@ def coScore(toolA, toolB):
     return co_score
 
 
+co_publications = {}
+related_tools = {}
 
 f = open("co_publications.json", "r")
 related_tools = eval(f.read())
@@ -57,6 +52,3 @@ f.close()
 f = open("related_tools.json", "r")
 co_publications = eval(f.read())
 f.close()
-
-
-print(coScore("cuffdiff", "cuffcompare"))
