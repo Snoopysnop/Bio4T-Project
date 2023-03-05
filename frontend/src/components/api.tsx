@@ -1,13 +1,11 @@
 import axios from "axios";
 
-async function apiTest() {
-    const a = '{"input":"caca", "output":"caca", "limit":"caca", "depth":"caca"}'
-    const json = JSON.parse(a)
+async function autocompletion(input:string) {
+    const jsonInput = '{"input":"'+input+'"}'
+    const json = JSON.parse(jsonInput)
     console.log(json);
+    return await axios.post('http://localhost:5000/autocompletion', {json})
+    .then(response => JSON.stringify(response.data));
+}
 
-    axios.post('http://localhost:5000/workflow-get', {json})
-    .then(response => console.log("lalalala "+response.data));
-    
-  }
-
-export default apiTest;
+export default autocompletion;

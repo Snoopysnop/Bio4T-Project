@@ -5,7 +5,7 @@ import './App.css';
 import AnimateParticles from './components/AminateParticles';
 import ReactFlowCanva from './components/Reactflow';
 import AutoComplete from './components/autocomplete';
-import apiTest from './components/api'
+import autocompletion from './components/api'
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
 
 export default function App() {
@@ -15,7 +15,6 @@ export default function App() {
   const [value, setValue] = React.useState(0);
 
   const onClick = () => {
-    apiTest();
     setShowResults(true);
     setTimeout(() => { document.getElementById("rfcanva")?.scrollIntoView({ behavior: "smooth", block: "start" }) }, 1);
   }

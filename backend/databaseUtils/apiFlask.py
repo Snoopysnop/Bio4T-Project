@@ -4,16 +4,17 @@ from flask_cors import CORS
 import sqlite3  
 import json
 from datetime import datetime
-import databaseUtils.Request_builder as request_Builder
-import databaseUtils.Utils as databaseUtils
+import Utils as dbUtils
 
 def create_utils():
-    return databaseUtils.Utils("http://localhost:7687", "neo4j", "bio4tdummy")
+    return dbUtils.Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
 
 def create_app():
 
     app = Flask(__name__)
     cors = CORS(app, resources={r"*": {"origins":"*"}})
+    utils = create_utils()
+
 
     @app.route("/workflow-get", methods=['POST'])
 
@@ -22,15 +23,26 @@ def create_app():
         print("La requête : "+data['json']['title'])
         return data['json']['title']'''
         context = request.get_json()["json"]
-        parameters = databaseUtils.Param(input=context['input'], output=context['output'], limit=context['limit'], depth=context['depth'])
-        utils = create_utils()
-        result = utils.request_workflow(parameters)
+        parameters = dbUtils.Param(input=context['input'], output=context['output'], limit=context['limit'], depth=context['depth'])
         #connect.nodes[1234]
         # print("La requête : ")
         # print(builder.requete)
         # print("Le résultat : ")
         # print(json.dumps(result, indent=2))
-        return result
+        return ""
+    
+    @app.route("/autocompletion", methods=['POST'])
+
+    def getAutoCompletion():
+        print(request)
+        text = request.get_json()["json"]["input"]
+        print("---------------"+str(text))
+        utils = create_utils()
+
+        result = utils.request_topicsListWithFilter(text)
+        jsonResult = json.dumps(result)
+        print()
+        return jsonResult
 
     return app 
 
