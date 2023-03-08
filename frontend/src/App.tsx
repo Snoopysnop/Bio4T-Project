@@ -5,8 +5,8 @@ import './App.css';
 import AnimateParticles from './components/AminateParticles';
 import ReactFlowCanva from './components/Reactflow';
 import AutoComplete from './components/autocomplete';
-import autocompletion from './components/api'
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 export default function App() {
 
@@ -49,14 +49,14 @@ export default function App() {
             style={{ opacity: -1.70 + ((scrollYProgress.get() * 2.5)), transform: 'translateX(' + (-100 + scrollYProgress.get() * 110) + 'vh)' }}
           >
             <div className='advice1'>
-            {showResults ?
-              <p data-aos="fade-right" data_aos-delay="400">blablablblablablabla
-                blablablblablablabla blablablblablablabla blablablblablablabla
-                blablablblablablabla blablablblablablabla blablablblablablabla
-                blablablblablablabla blablablblablablabla blablablblablablabla
-                blablablblablablabla blablablblablablabla
-              </p>
-              : null}
+              {showResults ?
+                <p data-aos="fade-right" data_aos-delay="400">blablablblablablabla
+                  blablablblablablabla blablablblablablabla blablablblablablabla
+                  blablablblablablabla blablablblablablabla blablablblablablabla
+                  blablablblablablabla blablablblablablabla blablablblablablabla
+                  blablablblablablabla blablablblablablabla
+                </p>
+                : null}
             </div>
           </motion.div>
 
@@ -81,33 +81,27 @@ export default function App() {
 
               </div>
             </div>
-            <form className="d-flex sticky" data-aos="fade-up" data-aos-delay="300">
+            <form className="d-flex sticky" >
               <div className="dropdown">
-                <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Type 2
-                </button>
-                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a className="dropdown-item" href="#">Action</a>
-                  <a className="dropdown-item" href="#">Another action</a>
-                  <a className="dropdown-item" href="#">Something else here</a>
-                </div>
+                <DropdownButton id="dropdown-basic-button" title="Input">
+                  <Dropdown.Item href="#/action-1">Action 1</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">Action 2</Dropdown.Item>
+                  <Dropdown.Item href="#/action-3">Action 3</Dropdown.Item>
+                </DropdownButton>
               </div>
               <div className="dropdown">
-                <button className="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Type 2
-                </button>
-                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a className="dropdown-item" href="#">Action</a>
-                  <a className="dropdown-item" href="#">Another action</a>
-                  <a className="dropdown-item" href="#">Something else here</a>
-                </div>
+                <DropdownButton id="dropdown-basic-button" title="Output">
+                  <Dropdown.Item href="#/action-1">Action 1</Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">Action 2</Dropdown.Item>
+                  <Dropdown.Item href="#/action-3">Action 3</Dropdown.Item>
+                </DropdownButton>
               </div>
               <div className="d-flex align-items-center" >
-                <div style={{ width: 210, margin: 5 }}>
+                <div>
                   <AutoComplete />
                 </div>
               </div>
-              <button type="button" className="btn btn-primary btnfont" onClick={onClick}>Search</button>
+              <button type="button" className="btn btn-secondary btnfont" onClick={onClick}>Search</button>
             </form>
             <motion.div
               style={{ opacity: (scrollYProgress.get() * 2.5) }}
@@ -115,7 +109,7 @@ export default function App() {
               <div id="rfcanva">
                 {showResults ?
                   <div className="reactflowCanva">
-                    <ReactFlowCanva/>
+                    <ReactFlowCanva />
                   </div>
                   : null}
               </div>

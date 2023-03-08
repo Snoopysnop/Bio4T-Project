@@ -13,6 +13,11 @@
   --font-sketch: "Cabin Sketch"
 }
 
+.MuiAutocomplete-input {
+  padding-left: 20px;
+}
+
+
 .header {
   height: 12vh;
   display: flex;
@@ -55,6 +60,9 @@
   grid-auto-flow: column;
 }
 
+.dropdown{
+  outline-color: #ff9100;  
+}
 
 .menu {
   display: flex;
@@ -104,18 +112,19 @@
 
 }
 
-.all form .form-control {
-  margin: 5px;
-  border-radius: 10px;
-  border-color: var(--color-primary);
-  background: none !important;
-}
-
 .all form .btn-primary {
+  transition-duration:0.4s; 
+  width: 85px;
+  height: 40px;
   margin: 5px;
-  background-color: var(--color-primary);
+  background-color: white;
+  color:grey;
   border-color: #ff9100;
   border-radius: 10px;
+}
+.all form .btn-primary:hover {
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .btnfont {
@@ -129,12 +138,18 @@
   align-items: center;
 }
 
-.all form .btn-outline-secondary {
+.all form .btn-secondary {
+  transition-duration: 0.4s;
   border-radius: 10px;
   margin: 5px;
   border-width: 1px;
-  border-color: var(--color-primary);
-  background: none !important;
+  background-color: #ff9100;
+  border-color: #ff9100;
+}
+
+.all form .btn-secondary:hover {
+  background-color: #ffffff;
+  color: grey;
 }
 
 
