@@ -55,7 +55,7 @@ def getRelatedTools(tool, tools, to):
 
     except:
         sys.stdout.write("\033[1;31m")
-        sys.stdout.write(f"\rERROR related_queries for {tool} returned :\n{pytrends.related_queries()}")
+        sys.stdout.write(f"\rERROR related_queries for {tool}")
         sys.stdout.flush()
         sys.stdout.write("\033[0;0m")
         print()
