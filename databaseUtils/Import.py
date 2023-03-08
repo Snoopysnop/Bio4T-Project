@@ -34,7 +34,8 @@ def importation(ip, user, password, file):
                         t.validated= tool.validated,
                         t.homepageStatus= tool.homepage_status,
                         t.elixirBadge= tool.elixir_badge,
-                        t.confidenceFlag= tool.confidence_flag
+                        t.confidenceFlag= tool.confidence_flag,
+                        t.biotoolsID = tool.biotoolsID
                         
             
             foreach (function in tool.function |
@@ -49,7 +50,7 @@ def importation(ip, user, password, file):
                 
                 //add the inputs of the function
                 foreach(input in function.input |
-                    MERGE (i:IO {term: input.data.term, uri: input.data.uri})
+                    MERGE (i:IO {term: input.data.term, uri: input.data.uri, isInputCompatibleTool: false})
                     MERGE (i)-[rel:inputOf]->(f)
                     SET rel.format = []
                     // the formats are linked to the function via the relation
@@ -60,7 +61,7 @@ def importation(ip, user, password, file):
     
                 //add the outputs of the function
                 foreach(output in function.output |
-                    MERGE (o:IO {term: output.data.term, uri: output.data.uri})
+                    MERGE (o:IO {term: output.data.term, uri: output.data.uri, isOutputCompatibleTool: false})
                     MERGE (o)<-[rel:outputOf]-(f)
                     SET rel.format = []
                     // the formats are linked to the function via the relation
@@ -78,7 +79,7 @@ def importation(ip, user, password, file):
     
             //add the topics
             foreach(topic in tool.topic |
-                MERGE (top:Topic {term: topic.term, uri:topic.uri})
+                MERGE (top:Topic {term: topic.term, uri:topic.uri, isInCompatibleTool: false})
                 MERGE (t)-[:Topic]-(top)
             )
     
@@ -155,9 +156,12 @@ def importation(ip, user, password, file):
     res = graph_db.run(commande)
     
     # création du graphe de requête
-    # outils seul ayant 1 output ou plus et 1 input ou plus
+    # outils seul ayant 1 output ou plus et 1 input ou plus -> nouveau CompatibleTool
     graph_db.run(""" 
     MATCH (output:IO)<-[:outputOf]-(f:Function)<-[:inputOf]-(input:IO), (topic:Topic)<-[]-(t:Tool)-[:hasFunction]->(f)
+    SET topic.isInCompatibleTool = true, 
+        input.isInputCompatibleTool = true,
+        output.isOutputCompatibleTool = true
     MERGE (ct:CompatibleTool {name: t.name})
         ON CREATE
             SET ct.input = [input.term],
@@ -169,11 +173,23 @@ def importation(ip, user, password, file):
                 ct.topics = CASE WHEN topic.term IN ct.topics THEN ct.topics ELSE ct.topics + [topic.term] END
     """)
 
+    # Workflow composé de plusieurs CompatibleTool. 
+    # Le lien entre 2 compatibleTool se fait si compatibleTool1.output = compatibleTool2.output
     graph_db.run(""" 
     MATCH (outputFinal:IO)<-[:outputOf]-(f1:Function)<-[:inputOf]-(inout:IO)<-[:outputOf]-(f2:Function)<-[:inputOf]-(inputInit:IO),
-    (t1:Tool)-[:hasFunction]->(f1), (t2:Tool)-[:hasFunction]->(f2),  (ct1:CompatibleTool), (ct2:CompatibleTool)
+    (t1:Tool)-[:hasFunction]->(f1), (t2:Tool)-[:hasFunction]->(f2), (ct1:CompatibleTool), (ct2:CompatibleTool)
     WHERE ct1.name = t1.name AND ct2.name = t2.name AND t1<>t2
     MERGE (ct1)<-[:isCompatible {score: 0, format: inout.term }]-(ct2)
+    """)
+
+    # Indexation sur les Topics
+    graph_db.run("""
+    CREATE FULLTEXT INDEX topicSearch IF NOT EXISTS FOR (t:Topic) ON EACH [t.term]
+    """)
+
+    # Indexation sur les IO
+    graph_db.run("""
+    CREATE FULLTEXT INDEX ioSearch IF NOT EXISTS FOR (io:IO) ON EACH [io.term]
     """)
     
     print("Importation terminée :")

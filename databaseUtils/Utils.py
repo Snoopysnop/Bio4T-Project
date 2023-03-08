@@ -57,6 +57,20 @@ class Utils:
         requete = Requete(None)
         result = graph_db.run(requete.getAllTopicsWithFilter(filter))
         return result.data()
+    
+    def request_InputListWithFilter(self,filter):
+        #TODO vérifier le paramètre pour éviter l'injection de code
+        graph_db = self.connect()
+        requete = Requete(None)
+        result = graph_db.run(requete.getAllInputsWithFilter(filter))
+        return result.data()
+    
+    def request_OutputListWithFilter(self,filter):
+        #TODO vérifier le paramètre pour éviter l'injection de code
+        graph_db = self.connect()
+        requete = Requete(None)
+        result = graph_db.run(requete.getAllOutputsWithFilter(filter))
+        return result.data()
 
     def request(self, req):
         graph_db = self.connect()
@@ -64,6 +78,9 @@ class Utils:
         return result.data()
 
 
+
+# TODO: A retirer. Utilisé juste pour les tests
 if __name__ == "__main__":
     utils = Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
-    print(utils.request_topicsListWithFilter('bio'))
+    print(utils.request_InputListWithFilter(''))
+    print(utils.request_OutputListWithFilter(''))

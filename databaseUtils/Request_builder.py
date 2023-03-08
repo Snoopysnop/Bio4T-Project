@@ -100,12 +100,23 @@ class Requete:
     
     def getAllTopicsWithFilter(self, filter):
         return f"""
-        MATCH (ct:CompatibleTool)
-        UNWIND ct.topics AS topic
-        WITH topic
-        WHERE toLower(topic) CONTAINS '{filter}'
-        WITH COLLECT(DISTINCT topic) AS topicsSet
-        RETURN topicsSet AS topicsList
+        CALL db.index.fulltext.queryNodes("topicSearch", '{filter} OR {filter}~ OR {filter}*') YIELD node, score
+        WHERE node.isInCompatibleTool
+        RETURN node.term, score
+        """
+    
+    def getAllInputsWithFilter(self, filter):
+        return f"""
+        CALL db.index.fulltext.queryNodes("ioSearch", '{filter} OR {filter}~ OR {filter}*') YIELD node, score
+        WHERE node.isInputCompatibleTool
+        RETURN node.term, score
+        """
+    
+    def getAllOutputsWithFilter(self, filter):
+        return f"""
+        CALL db.index.fulltext.queryNodes("ioSearch", '{filter} OR {filter}~ OR {filter}*') YIELD node, score
+        WHERE node.isOutputCompatibleTool
+        RETURN node.term, score
         """
 
 
