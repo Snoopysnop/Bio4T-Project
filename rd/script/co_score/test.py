@@ -1,36 +1,30 @@
 import sys
 import json
 import requests
+import py2neo
+from coScore import *
 
-def toolDetail(tool):
-    url = "http://bio.tools/api/t/"
-    request = requests.get(
-        url + tool,
-        headers={
-            "Accept": "application/json",
-        }
-    )
+def is_compatible(graph, tool_name_1, tool_name_2):
+    """Check if two tools have a isCompatible relationship in the database
 
-    return request.json()
+    Args:
+        graph (py2neo.Graph): The database
+        tool_name_1 (str): The name of the 1st tool
+        tool_name_2 (str): The name of the 2nd tool
 
+    Returns:
+        bool: True if the relationship isCompatible exists.
+    """
+    query = f"MATCH (a:Tool {{name: \"{tool_name_1}\"}}), (b:Tool {{name: \"{tool_name_2}\"}}) RETURN exists((a)-[:isCompatible]->(b))"
+    res = graph.run(query).data()
+    return list(res[0].values())[0]
 
-def toolDetailB(toolID):
-    url = "https://bio.tools/api/t?id=xconnector"
-    request = requests.get(
-        url,
-        headers={
-            "Accept": "application/json",
-        }
-    )
+def getAllToolsFromJson(file):
+    print("\nGetting all tolls from json file")
 
-    return request.json()
-
-
-def getAllTools(file):
-    print("building tool list")
     res = []
 
-    f = open(file, "r")
+    f = open(file)
     data = json.load(f)
     count = len(data["list"])
 
@@ -43,28 +37,40 @@ def getAllTools(file):
         sys.stdout.flush()
     return res
 
+def create_json():
 
 
-"""
-f = open("co_publications.json", "r")
-data = eval(f.read())
-f.close()
+    co_scores = {}
 
-print(type(data))
-"""
+    tools = getAllToolsFromJson("../../../data/data.json")
+    g = py2neo.Graph("neo4j://localhost:7687", auth=("neo4j", "bio4tdummy"))
 
-"""
-f = open("../../../data/data.json", "r")
-data = json.load(f)
-l = [
-        {"tool1":"2600","tool2":"2622","score":65},
-        {"tool1":"2681","tool2":"2684","score":65},
-        {"tool1":"2681","tool2":"2697","score":65}
-    ]
+    print("\nCreating json file")
+    count = len(tools)
+    i=0
+    for toolA in tools:
+        percent = int(((i + 1) / count) * 100)
 
-for tool in data["list"]:
-    if(tool["name"] == "PRISM"):
-        print(tool["biotoolsID"])
-"""
 
-print(toolDetail("PRISM"))
+        j = 0
+        for toolB in tools:
+
+            sys.stdout.write(
+                f"\r|{percent * '▉'}{(100 - percent) * '.'}| {percent}% ({toolA}, {toolB})")
+            sys.stdout.flush()
+
+
+            if is_compatible(g, toolA, toolB):
+                print("lala")
+                co_scores[(toolA, toolB)] = coScore(toolA, toolB)
+
+                f = open("test.json", "w")
+                f.write(str(co_scores))
+                f.close()
+
+            j += 1
+        i += 1
+
+
+
+create_json()

@@ -55,7 +55,7 @@ def getRelatedTools(tool, tools, to):
 
     except:
         sys.stdout.write("\033[1;31m")
-        sys.stdout.write(f"\rERROR related_queries for {tool} returned :\n{pytrends.related_queries()}")
+        sys.stdout.write(f"\rERROR related_queries for {tool}")
         sys.stdout.flush()
         sys.stdout.write("\033[0;0m")
         print()
@@ -75,7 +75,7 @@ def buildDict():
 
         d.update(res)
 
-        f = open("save/save.json", "w")
+        f = open("related_tools.json", "w")
         f.write(str(d))
         f.close()
 
@@ -88,14 +88,16 @@ def buildDict():
             f"\r|{percent * '▉'}{(100 - percent) * '.'}| {percent}% {tool}")
         sys.stdout.flush()
 
+    """
     d = clean(d)
 
     f = open("related_tools.json", "w")
     f.write(str(d))
+    """
 
 
 def buildDictFromSave():
-    f = open("save/save.json", "r")
+    f = open("related_tools.json", "r")
     d = eval(f.read())
     f.close()
 
@@ -115,7 +117,7 @@ def buildDictFromSave():
 
         d.update(res)
 
-        f = open("save/save.json", "w")
+        f = open("related_tools.json", "w")
         f.write(str(d))
         f.close()
 
@@ -127,6 +129,7 @@ def buildDictFromSave():
         sys.stdout.write(
             f"\r|{percent * '▉'}{(100 - percent) * '.'}| {percent}% {tool}")
         sys.stdout.flush()
+
 
 
 def clean(d):

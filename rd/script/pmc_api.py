@@ -1,6 +1,6 @@
 import requests
 from xml.etree import ElementTree
-from database_requests import get_sentences_containing_n_words, split_paragraph_in_sentences
+import database_requests
 
 def make_pmc_api_request(tool_name_1, tool_name_2, number_of_results = 10):
     """Make a request on PubMed API to get the list of publications which contains the tool_name_1 and the tool_name_2.
@@ -82,5 +82,5 @@ def get_sentences_from_article(tool_name_1, tool_name_2):
     dict_res1, total_result1 = access_to_n_first_articles(tool_name_1, tool_name_2)
     list_res = []
     for text in dict_res1.values():
-        list_res += get_sentences_containing_n_words(split_paragraph_in_sentences(text), [tool_name_1, tool_name_2])
+        list_res += database_requests.get_sentences_containing_n_words(database_requests.split_paragraph_in_sentences(text), [tool_name_1, tool_name_2])
     return list_res
