@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import autocompletion from './api';
+import ACOutput from './apiOutput';
 
 interface Item {
   id: number;
@@ -37,20 +37,23 @@ export default function AutoComplete() {
     }
 
     (async () => {
-      await sleep(1e3); // For demo purposes.
+      await sleep(1000); // For demo purposes.
 
-      if (active) {
-        const result = await autocompletion(inputValue);
+      if (active && inputValue !== '') {
+        console.log("inputValue")
+        console.log(inputValue)
+        const result = await ACOutput(inputValue);
+        console.log(result)
         var array = JSON.parse(result);
-        var topics = array[0];
-        var valeur = topics["topicsList"];
         var itemsArray: Item[] = [];
 
         var i = 0;
-        for (var itemName of valeur) {
+        for (var input of array) {
+          var inputName = input["node.term"];
+
           const itemToAdd: Item = {
             id: i,
-            name: itemName
+            name: inputName
           };
           itemsArray.push(itemToAdd);
           i++;
@@ -73,7 +76,8 @@ export default function AutoComplete() {
   return (
     <Autocomplete
       id="autocomplete"
-      sx={{width: 210,
+      freeSolo
+      sx={{width: 86,
         margin: "5px",
       }}
       open={open}
@@ -84,7 +88,6 @@ export default function AutoComplete() {
         setOpen(false);
       }}
 
-      disablePortal = {false}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
@@ -93,6 +96,13 @@ export default function AutoComplete() {
       getOptionLabel={(option) => option.name}
       options={options}
       loading={loading}
+      componentsProps={{
+        paper: {
+          sx: {
+            width: 150
+          }
+        }
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -127,19 +137,11 @@ export default function AutoComplete() {
             "& .MuiAutocomplete-inputRoot": {
               borderRadius: "10px"
             },
-            "& .MuiInputLabel-outlined": {
-              paddingLeft: "10px"
-            },
+            
           }}
-          label="Search Something"
+          label="Output"
           InputProps={{
             ...params.InputProps,
-            endAdornment: (
-              <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </React.Fragment>
-            ),
           }}
         />
       )}

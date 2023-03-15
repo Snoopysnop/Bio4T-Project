@@ -4,7 +4,7 @@ async function autocompletion(input:string) {
     const jsonInput = '{"input":"'+input+'"}'
     const json = JSON.parse(jsonInput)
     console.log(json);
-    return await axios.post('http://localhost:5000/autocompletion', {json})
+    return await axios.post('http://localhost:5000/getOutputs', {json})
     .then(response => JSON.stringify(response.data));
 }
 

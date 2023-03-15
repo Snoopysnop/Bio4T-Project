@@ -1,6 +1,8 @@
 from py2neo import *
 import json
-import Request_builder as rb
+
+from Request_builder import build_request_toolList, Requete
+
 
 class Param:
     def __init__(self, input="", output="", depth=5, limit=10):
@@ -20,7 +22,7 @@ class Param:
 
     def set_limit(self, limit):
         self.limit = limit
-    
+
 
 class Utils:
     def __init__(self, ip="", user="", password=""):
@@ -34,26 +36,40 @@ class Utils:
     def request_toolList(self, listId):
         params = {'idList': listId}
         graph_db = self.connect()
-        result = graph_db.run(rb.build_request_toolList(), params)
+        result = graph_db.run(build_request_toolList(), params)
         return result.data()
 
     def request_workflow(self, param):
         graph_db = self.connect()
-        requete = rb.Requete(param)
+        requete = Requete(param)
         result = graph_db.run(requete.creer_Requete())
         return result.data()
     
     def request_topicsList(self):
         graph_db = self.connect()
-        requete = rb.Requete(None)
-        result = graph_db.run(requete.getAllTopics())
+        requete = Requete(None)
+        result = graph_db.run(requete.getAllTopic())
         return result.data()
     
     def request_topicsListWithFilter(self,filter):
         #TODO vérifier le paramètre pour éviter l'injection de code
         graph_db = self.connect()
-        requete = rb.Requete(None)
+        requete = Requete(None)
         result = graph_db.run(requete.getAllTopicsWithFilter(filter))
+        return result.data()
+    
+    def request_InputListWithFilter(self,filter):
+        #TODO vérifier le paramètre pour éviter l'injection de code
+        graph_db = self.connect()
+        requete = Requete(None)
+        result = graph_db.run(requete.getAllInputsWithFilter(filter))
+        return result.data()
+    
+    def request_OutputListWithFilter(self,filter):
+        #TODO vérifier le paramètre pour éviter l'injection de code
+        graph_db = self.connect()
+        requete = Requete(None)
+        result = graph_db.run(requete.getAllOutputsWithFilter(filter))
         return result.data()
 
     def request(self, req):
@@ -62,6 +78,10 @@ class Utils:
         return result.data()
 
 
+
+# TODO: A retirer. Utilisé juste pour les tests
 if __name__ == "__main__":
     utils = Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
-    print(utils.request_topicsListWithFilter('bio'))
+    print(utils.request_topicsListWithFilter(''))
+    print(utils.request_InputListWithFilter('sequence'))
+    print(utils.request_OutputListWithFilter('sequence'))

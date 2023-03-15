@@ -12,13 +12,13 @@ def create_utils():
 def create_app():
 
     app = Flask(__name__)
-    cors = CORS(app, resources={r"*": {"origins":"*"}})
+    CORS(app)
     utils = create_utils()
 
 
-    @app.route("/workflow-get", methods=['POST'])
+    @app.route("/test", methods=['POST'])
 
-    def search_workflow_api():
+    def test():
         '''data = request.get_json()
         print("La requête : "+data['json']['title'])
         return data['json']['title']'''
@@ -31,15 +31,38 @@ def create_app():
         # print(json.dumps(result, indent=2))
         return ""
     
-    @app.route("/autocompletion", methods=['POST'])
+    @app.route("/getLabels", methods=['POST'])
 
-    def getAutoCompletion():
+    def getLabels():
         print(request)
         text = request.get_json()["json"]["input"]
-        print("---------------"+str(text))
         utils = create_utils()
-
         result = utils.request_topicsListWithFilter(text)
+        jsonResult = json.dumps(result)
+        print(jsonResult)
+        return jsonResult
+    
+    @app.route("/getInputs", methods=['POST'])
+
+    def getInputs():
+        print(request)
+        text = request.get_json()["json"]["input"]
+        print(str(text))
+        utils = create_utils()
+        result = utils.request_InputListWithFilter(text)
+        print(result)
+        jsonResult = json.dumps(result)
+        print()
+        return jsonResult
+    
+    @app.route("/getOutputs", methods=['POST'])
+
+    def getOutputs():
+        print(request)
+        text = request.get_json()["json"]["input"]
+        utils = create_utils()
+        result = utils.request_OutputListWithFilter(text)
+
         jsonResult = json.dumps(result)
         print()
         return jsonResult

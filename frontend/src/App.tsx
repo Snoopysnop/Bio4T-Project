@@ -4,7 +4,10 @@ import "aos/dist/aos.css";
 import './App.css';
 import AnimateParticles from './components/AminateParticles';
 import ReactFlowCanva from './components/Reactflow';
-import AutoComplete from './components/autocomplete';
+import AutoCompleteLabel from './components/AutoCompleteLabel';
+import AutoCompleteInputType from './components/AutoCompleteInputType';
+import AutoCompleteOutputType from './components/AutoCompleteOutputType';
+
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
@@ -83,22 +86,14 @@ export default function App() {
             </div>
             <form className="d-flex sticky" >
               <div className="dropdown">
-                <DropdownButton id="dropdown-basic-button" title="Input">
-                  <Dropdown.Item href="#/action-1">Action 1</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Action 2</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Action 3</Dropdown.Item>
-                </DropdownButton>
+                <AutoCompleteInputType/>
               </div>
               <div className="dropdown">
-                <DropdownButton id="dropdown-basic-button" title="Output">
-                  <Dropdown.Item href="#/action-1">Action 1</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Action 2</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Action 3</Dropdown.Item>
-                </DropdownButton>
+                <AutoCompleteOutputType/>
               </div>
               <div className="d-flex align-items-center" >
                 <div>
-                  <AutoComplete />
+                  <AutoCompleteLabel />
                 </div>
               </div>
               <button type="button" className="btn btn-secondary btnfont" onClick={onClick}>Search</button>

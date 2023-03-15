@@ -51,7 +51,7 @@
 .advice1 p {
   color: #ffffff;
   position: sticky;
-  top: 40vh;
+  top: 30vh;
 }
 
 .grid{
@@ -77,6 +77,12 @@
   text-align: center;
   font-size: large;
   color: blueviolet;
+}
+
+@media only screen and (max-width: 1000px) {
+  .advice1 {
+    display: none;
+  }
 }
 
 .text h2 {
