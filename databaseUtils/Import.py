@@ -50,7 +50,9 @@ def importation(ip, user, password, file):
                 
                 //add the inputs of the function
                 foreach(input in function.input |
-                    MERGE (i:IO {term: input.data.term, uri: input.data.uri, isInputCompatibleTool: false})
+                    MERGE (i:IO {term: input.data.term, uri: input.data.uri})
+                        ON CREATE 
+                            SET i.isInputCompatibleTool = false
                     MERGE (i)-[rel:inputOf]->(f)
                     SET rel.format = []
                     // the formats are linked to the function via the relation
@@ -61,7 +63,9 @@ def importation(ip, user, password, file):
     
                 //add the outputs of the function
                 foreach(output in function.output |
-                    MERGE (o:IO {term: output.data.term, uri: output.data.uri, isOutputCompatibleTool: false})
+                    MERGE (o:IO {term: output.data.term, uri: output.data.uri})
+                        ON CREATE
+                            SET o.isOutputCompatibleTool = false
                     MERGE (o)<-[rel:outputOf]-(f)
                     SET rel.format = []
                     // the formats are linked to the function via the relation
@@ -156,7 +160,7 @@ def importation(ip, user, password, file):
     res = graph_db.run(commande)
     
     # création du graphe de requête
-    # outils seul ayant 1 output ou plus et 1 input ou plus -> nouveau CompatibleTool
+    # outils seul ayant 1 output ou plus et 1 input ou plus donne nouveau CompatibleTool
     graph_db.run(""" 
     MATCH (output:IO)<-[:outputOf]-(f:Function)<-[:inputOf]-(input:IO), (topic:Topic)<-[]-(t:Tool)-[:hasFunction]->(f)
     SET topic.isInCompatibleTool = true, 
@@ -166,7 +170,8 @@ def importation(ip, user, password, file):
         ON CREATE
             SET ct.input = [input.term],
                 ct.output = [output.term],
-                ct.topics = [topic.term]
+                ct.topics = [topic.term],
+                ct.toolID = t.biotoolsID
         ON MATCH
             SET ct.input = CASE WHEN input.term IN ct.input THEN ct.input ELSE ct.input + [input.term] END,
                 ct.output = CASE WHEN output.term IN ct.output THEN ct.output ELSE ct.output + [output.term] END,
@@ -174,12 +179,17 @@ def importation(ip, user, password, file):
     """)
 
     # Workflow composé de plusieurs CompatibleTool. 
-    # Le lien entre 2 compatibleTool se fait si compatibleTool1.output = compatibleTool2.output
+    # Le lien entre 2 compatibleTool se fait si compatibleTool1.output = compatibleTool2.input
     graph_db.run(""" 
     MATCH (outputFinal:IO)<-[:outputOf]-(f1:Function)<-[:inputOf]-(inout:IO)<-[:outputOf]-(f2:Function)<-[:inputOf]-(inputInit:IO),
     (t1:Tool)-[:hasFunction]->(f1), (t2:Tool)-[:hasFunction]->(f2), (ct1:CompatibleTool), (ct2:CompatibleTool)
     WHERE ct1.name = t1.name AND ct2.name = t2.name AND t1<>t2
-    MERGE (ct1)<-[:isCompatible {score: 0, format: inout.term }]-(ct2)
+    MERGE (ct1)<-[comp:isCompatible]-(ct2)
+        ON CREATE
+            SET comp.format = [inout.term],
+                comp.score = 0
+        ON MATCH
+            SET comp.format = CASE WHEN inout.term IN comp.format THEN comp.format ELSE comp.format + [inout.term] END
     """)
 
     # Indexation sur les Topics
@@ -207,4 +217,4 @@ if __name__ == "__main__":
     IP = "bolt://localhost:7687"
     USER = "neo4j"
     PASSWORD = "bio4tdummy"
-    importation(IP, USER, PASSWORD, "datatest.json")
+    importation(IP, USER, PASSWORD, "data.json")

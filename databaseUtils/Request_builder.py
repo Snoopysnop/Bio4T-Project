@@ -89,34 +89,61 @@ class Requete:
             """
         return self.requete
 
+    def getWorkflows(self, input, output, deepth):
+        return f"""
+        MATCH p = (t1:CompatibleTool)-[:isCompatible *0..{deepth}]->(t2:CompatibleTool)
+        WHERE "{input}" IN t1.input AND "{output}" IN t2.output
+        RETURN apoc.path.elements(p)
+        """
+
     # Renvoie une liste de tous les topics des compatiblesTools
     def getAllTopics(self):
         return """
-        MATCH (ct:CompatibleTool)
-        UNWIND ct.topics AS topic
-        WITH COLLECT(DISTINCT topic) AS topicsSet
-        RETURN topicsSet AS topicsList
+        MATCH (t:Topic)
+        WHERE t.isInCompatibleTool
+        RETURN t.term AS name
         """
     
     def getAllTopicsWithFilter(self, filter):
         return f"""
         CALL db.index.fulltext.queryNodes("topicSearch", '{filter} OR {filter}~ OR {filter}*') YIELD node, score
         WHERE node.isInCompatibleTool
-        RETURN node.term, score
+        RETURN node.term AS name, score
+        """
+    
+    def getAllInputs(self):
+        return """
+        MATCH (io:IO)
+        WHERE io.isInputCompatibleTool
+        RETURN io.term AS name
+        """
+    
+    def getAllOutputs(self):
+        return """
+        MATCH (io:IO)
+        WHERE io.isOutputCompatibleTool
+        RETURN io.term AS name
         """
     
     def getAllInputsWithFilter(self, filter):
         return f"""
         CALL db.index.fulltext.queryNodes("ioSearch", '{filter} OR {filter}~ OR {filter}*') YIELD node, score
         WHERE node.isInputCompatibleTool
-        RETURN node.term, score
+        RETURN node.term AS name, score
         """
     
     def getAllOutputsWithFilter(self, filter):
         return f"""
         CALL db.index.fulltext.queryNodes("ioSearch", '{filter} OR {filter}~ OR {filter}*') YIELD node, score
         WHERE node.isOutputCompatibleTool
-        RETURN node.term, score
+        RETURN node.term AS name, score
+        """
+    
+    def getToolFromCompatibleTool(self, filter):
+        return f"""
+        MATCH (t:Tool)
+        WHERE t.biotoolsID = "{filter}"
+        RETURN t
         """
 
 
