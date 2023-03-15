@@ -39,37 +39,53 @@ class Utils:
         result = graph_db.run(build_request_toolList(), params)
         return result.data()
 
-    def request_workflow(self, param):
+    def request_workflowOld(self, param):
         graph_db = self.connect()
         requete = Requete(param)
         result = graph_db.run(requete.creer_Requete())
         return result.data()
     
-    def request_topicsList(self):
+    def request_workflow(self, input, output, deepth):
         graph_db = self.connect()
         requete = Requete(None)
-        result = graph_db.run(requete.getAllTopic())
+        result = graph_db.run(requete.getWorkflows(input, output, deepth))
         return result.data()
     
     def request_topicsListWithFilter(self,filter):
         #TODO vérifier le paramètre pour éviter l'injection de code
         graph_db = self.connect()
         requete = Requete(None)
-        result = graph_db.run(requete.getAllTopicsWithFilter(filter))
+        if (filter == ''):
+            result = graph_db.run(requete.getAllTopics())
+        else:
+            result = graph_db.run(requete.getAllTopicsWithFilter(filter))
         return result.data()
     
     def request_InputListWithFilter(self,filter):
         #TODO vérifier le paramètre pour éviter l'injection de code
         graph_db = self.connect()
         requete = Requete(None)
-        result = graph_db.run(requete.getAllInputsWithFilter(filter))
+        if (filter == ''):
+            result = graph_db.run(requete.getAllInputs())
+        else:
+            result = graph_db.run(requete.getAllInputsWithFilter(filter))
         return result.data()
     
     def request_OutputListWithFilter(self,filter):
         #TODO vérifier le paramètre pour éviter l'injection de code
         graph_db = self.connect()
         requete = Requete(None)
-        result = graph_db.run(requete.getAllOutputsWithFilter(filter))
+        if (filter == ''):
+            result = graph_db.run(requete.getAllOutputs())
+        else:
+            result = graph_db.run(requete.getAllOutputsWithFilter(filter))
+        return result.data()
+
+    def request_ToolFromCompatibleTool(self,filter):
+        #TODO vérifier le paramètre pour éviter l'injection de code
+        graph_db = self.connect()
+        requete = Requete(None)
+        result = graph_db.run(requete.getToolFromCompatibleTool(filter))
         return result.data()
 
     def request(self, req):
@@ -82,6 +98,9 @@ class Utils:
 # TODO: A retirer. Utilisé juste pour les tests
 if __name__ == "__main__":
     utils = Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
+    print(utils.request_InputListWithFilter(''))
+    print(utils.request_InputListWithFilter('bio'))
+    print(utils.request_OutputListWithFilter(''))
+    print(utils.request_OutputListWithFilter('bio'))
     print(utils.request_topicsListWithFilter(''))
-    print(utils.request_InputListWithFilter('sequence'))
-    print(utils.request_OutputListWithFilter('sequence'))
+    print(utils.request_topicsListWithFilter('bio'))

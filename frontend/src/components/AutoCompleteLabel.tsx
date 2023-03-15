@@ -41,16 +41,15 @@ export default function AutoComplete() {
 
       if (active) {
         const result = await ACLabel(inputValue);
-        var array = JSON.parse(result);
-        var topics = array[0];
-        var valeur = topics["topicsList"];
-        var itemsArray: Item[] = [];
+        console.log(result)
 
+        var array = JSON.parse(result);
+        var itemsArray: Item[] = [];
         var i = 0;
-        for (var itemName of valeur) {
+        for (var itemName of array) {
           const itemToAdd: Item = {
             id: i,
-            name: itemName
+            name: itemName["name"]
           };
           itemsArray.push(itemToAdd);
           i++;

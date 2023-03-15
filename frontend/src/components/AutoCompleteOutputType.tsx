@@ -39,21 +39,17 @@ export default function AutoComplete() {
     (async () => {
       await sleep(1000); // For demo purposes.
 
-      if (active && inputValue !== '') {
-        console.log("inputValue")
-        console.log(inputValue)
+      if (active) {
+
         const result = await ACOutput(inputValue);
         console.log(result)
         var array = JSON.parse(result);
         var itemsArray: Item[] = [];
-
         var i = 0;
-        for (var input of array) {
-          var inputName = input["node.term"];
-
+        for (var itemName of array) {
           const itemToAdd: Item = {
             id: i,
-            name: inputName
+            name: itemName["name"]
           };
           itemsArray.push(itemToAdd);
           i++;
