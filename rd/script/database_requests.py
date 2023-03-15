@@ -1,7 +1,7 @@
 import json
 import py2neo
 from nltk import tokenize
-from pmc_api import get_number_of_results
+import pmc_api
 
 
 def connect_to_neo4j(user, password):
@@ -82,7 +82,7 @@ def create_json():
         list_res.append({
             "tool1": dictionary["id(a)"],
             "tool2": dictionary["id(b)"],
-            "score": get_number_of_results(dictionary["a.name"], dictionary["b.name"])
+            "score": pmc_api.get_number_of_results(dictionary["a.name"], dictionary["b.name"])
         })
     with open("./data/output_scoring.json", "w") as fout:
         json.dump(list_res, fout)
