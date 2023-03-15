@@ -6,7 +6,6 @@ import requests
 import re
 import QwantSearch
 from nltk.sentiment import SentimentIntensityAnalyzer
-
 sia = SentimentIntensityAnalyzer()
 
 sentenceList = []
@@ -97,7 +96,7 @@ def findSentence(indexOcc, text:str):
             if( (debut,fin) not in index):
                 #sentences.append(text[debut:fin+1])
                 index.append((debut,fin+1))
-    sentenceList.append(index)
+    
     return index
 
 # extract the sentences of url where both wordOne and wordTwo appear
@@ -148,11 +147,13 @@ def shittyScoring(dictionnaire):
 
 # little part to show the result
 def showMe(url:str,wordOne:str,wordTwo:str):
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    dictioAndIndex = htmlToString(req,wordOne,wordTwo)
-    #for i in (dictioAndIndex[0]):
-    #    print("[ \"" ,i , "\" ]", " apparait : " , dictioAndIndex[0][i], " fois")
-    print("score de ",wordOne, " et ",wordTwo, " = ", shittyScoring(dictioAndIndex), " sur ", url)
+    #req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    sentences = []
+    dictioAndIndex = htmlToString(url,wordOne,wordTwo)
+    for i in (dictioAndIndex[0]):
+        sentences.append(i)
+    return sentences
+    #print("score de ",wordOne, " et ",wordTwo, " = ", shittyScoring(dictioAndIndex), " sur ", url)
 
 
 def showAll(urls, wordOne,wordTwo):
@@ -166,7 +167,7 @@ def twoToolsToAnalyse(tool1, tool2):
     urls = QwantSearch.getLinks(tool1, tool2)
     showAll(urls,tool1,tool2)
 
-twoToolsToAnalyse("CoverM","BBMap")
+#twoToolsToAnalyse("CoverM","BBMap")
 
 
 
@@ -182,6 +183,12 @@ qwantList = QwantSearch.getLinks("Trimmomatic", "BBMap") #Attention on tombe sur
 
 #showAll(qwantList,wordOne[2],wordTwo[3])
 #showMe(target[0],wordOne[0],wordTwo[0])
-#showMe(target[1],wordOne[1],wordTwo[1])
+showMe(target[1],wordOne[1],wordTwo[1])
+for i in sentenceList :
+    print(i)
 '''
+
+#urls = QwantSearch.getLinks("CoverM", "BBMap")
+#for u in urls :
+#    print(u)
 
