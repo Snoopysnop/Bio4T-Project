@@ -1,20 +1,24 @@
 import requests
 import json
 import sys
-from biotools import *
+
+
+def toolDetail(tool):
+    url = "http://bio.tools/api/t/"
+    request = requests.get(
+        url + tool,
+        headers={
+            "Accept": "application/json",
+        }
+    )
+
+    return request.json()
 
 
 def getPublications(tool):
-    publications = []
 
-    for publication in toolDetail(tool)["publication"]:
-        publications.append({
-            "doi": publication["doi"],
-            "pmid": publication["pmid"],
-            "pmcid": publication["pmcid"]
-        })
+    return toolDetail(tool)["publication"]
 
-    return publications
 
 
 def getAllPublication(tools):
@@ -88,17 +92,19 @@ def getAllCoPublications(all_publications):
     i = 0
     for tool1 in all_publications.keys():
         percent = int(((i + 1) / count) * 100)
-        sys.stdout.write(
-            f"\r|{percent * '▉'}{(100 - percent) * '.'}| {percent}%")
-        sys.stdout.flush()
+        s
 
         j = 0
         for tool2 in all_publications.keys():
+            
+            sys.stdout.write(
+            f"\r|{percent * '▉'}{(100 - percent) * '.'}| {percent}% ({tool1}, {tool2})")
+            sys.stdout.flush()
 
             if i < j:
                 publications_in_common = getCoPublications(all_publications[tool1], all_publications[tool2])
                 if len(publications_in_common) > 0:
-                    all_co_publications[(tool1, tool2)] = len(publications_in_common)
+                    all_co_publications[(tool1, tool2)] = publications_in_common
             j += 1
         i += 1
 
@@ -106,5 +112,5 @@ def getAllCoPublications(all_publications):
 
 
 _all_publications_in_common = getAllCoPublications(getAllPublication(getAllToolsFromJson("../../../data/data.json")))
-_f = open("co_publications.json", "w")
+_f = open("co_publications_details.json", "w")
 _f.write(str(_all_publications_in_common))
