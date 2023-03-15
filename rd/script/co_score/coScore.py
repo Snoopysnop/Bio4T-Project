@@ -1,3 +1,5 @@
+from pathlib import Path
+
 def relatedQueryScore(toolA, toolB):
     global related_tools
 
@@ -45,10 +47,10 @@ def coScore(toolA, toolB):
 co_publications = {}
 related_tools = {}
 
-f = open("co_publications.json", "r")
+f = open((Path(__file__) / "../co_publications.json").resolve(), "r")
 related_tools = eval(f.read())
 f.close()
 
-f = open("related_tools.json", "r")
+f = open((Path(__file__) / "../related_tools.json").resolve(), "r")
 co_publications = eval(f.read())
 f.close()

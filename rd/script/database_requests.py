@@ -2,6 +2,8 @@ import json
 import py2neo
 from nltk import tokenize
 import pmc_api
+from co_score.coScore import coScore
+from pathlib import Path
 
 
 def connect_to_neo4j(user, password):
@@ -72,24 +74,29 @@ def get_sentences_containing_n_words(sentence_list: list[str], words: list[str])
     return res
 
 def get_compatible_tools(graph):
-    return graph.run("MATCH (a:Tool)-[:isCompatible]->(b:Tool) RETURN id(a), a.name, id(b), b.name").data()
+    return graph.run("MATCH (a:CompatibleTool)-[:isCompatible]->(b:CompatibleTool) RETURN id(a), a.name, id(b), b.name").data()
 
 def create_json():
     g = connect_to_neo4j("neo4j", "bio4tdummy")
     req_data = get_compatible_tools(g)
+    dict_res = {}
     list_res = []
     for dictionary in req_data:
         list_res.append({
             "tool1": dictionary["id(a)"],
+            "name1": dictionary["a.name"],
             "tool2": dictionary["id(b)"],
-            "score": pmc_api.get_number_of_results(dictionary["a.name"], dictionary["b.name"])
+            "name2": dictionary["b.name"],
+            "score": coScore(dictionary["a.name"], dictionary["b.name"]) + pmc_api.get_number_of_results(dictionary["a.name"], dictionary["b.name"])
         })
-    with open("./data/output_scoring.json", "w") as fout:
-        json.dump(list_res, fout)
+    dict_res["items"] = list_res
+    print(dict_res)
+    with open((Path(__file__) / "../data/output_scoring.json").resolve(), "w") as fout:
+        json.dump(dict_res, fout)
 
 if __name__ == "__main__":
-    g = connect_to_neo4j("neo4j", "bio4tdummy")
-
+    # g = connect_to_neo4j("neo4j", "bio4tdummy")
+    create_json()
     # save_query_result("MATCH (a:Tool)-[:isCompatible]->(b:Tool) RETURN id(a), a.name, id(b), b.name", "./data/tooolsCompatible.json", g)
     # sentences = ["Bonjour", "Au revoir", "Bonjour, je m'appelle Jean-Baptiste. Au revoir"]
     # paragraph = "BBMap/BBTools are now open source. Please try it out - it's a 3MB download, and written in pure Java, so installation is trivial - just unzip and run. Handles all sequencing platforms (Illumina, PacBio, 454, Sanger, Nanopore, etc) except Solid colorspace, which I removed to simplify the code."
