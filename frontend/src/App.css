@@ -110,28 +110,21 @@
   
   box-shadow: 5px 5px 5px #ff9100;
   width: 500px;
-  padding: 4px;
+  
   border-width: 3px;
   border-color: var(--color-primary);
   border-radius: 10px;
   background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
 
 }
 
-.all form .btn-primary {
-  transition-duration:0.4s; 
-  width: 85px;
-  height: 40px;
-  margin: 5px;
-  background-color: white;
-  color:grey;
-  border-color: #ff9100;
-  border-radius: 10px;
-}
-.all form .btn-primary:hover {
-  background-color: #ffffff;
-  color: #000000;
-}
 
 .btnfont {
   font-family: var(--font-primary);
@@ -147,7 +140,6 @@
 .all form .btn-secondary {
   transition-duration: 0.4s;
   border-radius: 10px;
-  margin: 5px;
   border-width: 1px;
   background-color: #ff9100;
   border-color: #ff9100;

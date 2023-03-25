@@ -85,7 +85,7 @@ export default function App() {
               </div>
             </div>
             <form className="d-flex sticky" >
-              <div className="dropdown">
+              <div className="dropdown inputbtn">
                 <AutoCompleteInputType/>
               </div>
               <div className="dropdown">

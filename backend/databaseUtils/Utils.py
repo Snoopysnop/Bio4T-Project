@@ -98,9 +98,5 @@ class Utils:
 # TODO: A retirer. Utilisé juste pour les tests
 if __name__ == "__main__":
     utils = Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
-    print(utils.request_InputListWithFilter(''))
-    print(utils.request_InputListWithFilter('bio'))
-    print(utils.request_OutputListWithFilter(''))
-    print(utils.request_OutputListWithFilter('bio'))
-    print(utils.request_topicsListWithFilter(''))
-    print(utils.request_topicsListWithFilter('bio'))
+   
+    print(utils.request_topicsListWithFilter('acc'))

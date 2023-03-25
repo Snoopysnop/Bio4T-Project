@@ -1,147 +1,99 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import { createFilterOptions } from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
-import ACOutput from './apiOutput';
+import React, { useState, useEffect } from 'react';
+import ApiOutput from './apiOutput';
+import AsyncSelect  from 'react-select';
 
-interface Item {
+interface Result {
   id: number;
   name: string;
 }
 
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
+function SearchOutputBar() {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<Result[]>([]);
 
-export default function AutoComplete() {
-  const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState<readonly Item[]>([]);
-  const loading = open && options.length === 0;
-  const [inputValue, setInputValue] = React.useState('');
+  useEffect(() => {
+    async function fetchData() {
+      const response = await ApiOutput(query);
+      var array = JSON.parse(response);
+      console.log(array)
+      setResults(array);
+    }
+    fetchData();
+  }, [query]);
 
-  const OPTIONS_LIMIT = 3;
-  const defaultFilterOptions = createFilterOptions();
+
+
+
+  function handleChange(selectedOption: any) {
+    console.log(selectedOption)
+    setQuery(selectedOption ? selectedOption.value : '');
+  }
+
   
-  const filterOptions = (options:any, state:any) => {
-    return defaultFilterOptions(options, state).slice(0, OPTIONS_LIMIT);
+  const options = results.map(result => ({ value: result.name, label: result.name }));
+
+  const customStyles = {
+    control: (provided: any, state: any) => ({
+      ...provided,
+      borderRadius: 10,
+      borderColor: state.isFocused ? '#ff9100' : provided.borderColor,
+      '&:hover': {
+        borderColor: state.isFocused ? '#ff9100' : provided.borderColor
+      },
+      boxShadow: state.isFocused ? '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' : provided.boxShadow
+    }),
+
+    container: (provided: any) => ({
+      ...provided,
+      width: 100,
+    }),
+
+    dropdownIndicator: (provided: any) => ({
+      ...provided,
+      display: 'none', // masquer l'icône "V"
+    }),
+    indicatorSeparator: (provided: any) => ({
+      ...provided,
+      display: 'none', // masquer l'icône "V"
+    }),
+    menu: (provided: any) => ({
+      ...provided,
+      width: 200
+    }),
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: state.isSelected ? '#007bff' : provided.backgroundColor,
+      color: state.isSelected ? 'white' : provided.color,
+      '&:hover': {
+        backgroundColor: state.isSelected ? '#007bff' : '#f8f9fa',
+        color: state.isSelected ? 'white' : provided.color,
+      },
+    }),
+   
+
   };
 
-  React.useEffect(() => {
-    let active = true;
-    console.log(inputValue);
-    if (!loading) {
-      return undefined;
-    }
-
-    (async () => {
-      await sleep(1000); // For demo purposes.
-
-      if (active) {
-
-        const result = await ACOutput(inputValue);
-        console.log(result)
-        var array = JSON.parse(result);
-        var itemsArray: Item[] = [];
-        var i = 0;
-        for (var itemName of array) {
-          const itemToAdd: Item = {
-            id: i,
-            name: itemName["name"]
-          };
-          itemsArray.push(itemToAdd);
-          i++;
-        }
-        setOptions(itemsArray);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [loading]);
-
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
-
   return (
-    <Autocomplete
-      id="autocomplete"
-      freeSolo
-      sx={{width: 86,
-        margin: "5px",
+    <AsyncSelect
+    
+      value={{ value: query, label: query }}
+      onInputChange={(value, action) => {
+        // only set the input when the action that caused the
+        // change equals to "input-change" and ignore the other
+        // ones like: "set-value", "input-blur", and "menu-close"
+        if (action.action === "input-change") setQuery(value); // <---
       }}
-      open={open}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
-
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}
-      filterOptions={filterOptions}
-      isOptionEqualToValue={(option:any, value) => option.name === value.name}
-      getOptionLabel={(option) => option.name}
+      blurInputOnSelect={true} //set by default, but to be sure
+      closeMenuOnSelect={true}
+      onChange={handleChange}
       options={options}
-      loading={loading}
-      componentsProps={{
-        paper: {
-          sx: {
-            width: 150
-          }
-        }
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          size="small"
-          sx={{
-            
-            '& label.Mui-focused': {
-              color: 'grey',
-            },
-            '& .MuiInput-underline:after': {
-              borderBottomColor: '#ff9100',
-            },
-            '& .MuiOutlinedInput-root': {
-              legend: {
-                marginLeft: "5px"
-              },
-              '& fieldset': {
-                borderColor: 'grey',
-              },
-              '&:hover fieldset': {
-                borderColor: 'gray',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#ff9100',
-                borderWidth: "1px"
-              },
-            },
-           
-            "& . MuiTextField-root":{
-              color:"#ff9100"
-            },
-            "& .MuiAutocomplete-inputRoot": {
-              borderRadius: "10px"
-            },
-            
-          }}
-          label="Output"
-          InputProps={{
-            ...params.InputProps,
-          }}
-        />
-      )}
+      isClearable={true}
+      filterOption={() => true}
+      placeholder="Search for items"
+      styles={customStyles}
+      
     />
   );
 }
 
+export default SearchOutputBar;
