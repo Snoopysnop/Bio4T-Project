@@ -4,9 +4,11 @@ import "aos/dist/aos.css";
 import './App.css';
 import AnimateParticles from './components/AminateParticles';
 import ReactFlowCanva from './components/Reactflow';
+import Gif from './components/Gif';
 import AutoCompleteLabel from './components/AutoCompleteLabel';
 import AutoCompleteInputType from './components/AutoCompleteInputType';
 import AutoCompleteOutputType from './components/AutoCompleteOutputType';
+import Joke from './components/Joke'
 
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
 import { Dropdown, DropdownButton } from 'react-bootstrap';
@@ -37,19 +39,11 @@ export default function App() {
 
   return (
     <div>
-      <header id="header" className="header fixed-top">
-        <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-          <a href="App.js" className="logo d-flex align-items-center">
-            <h1>BIO4T</h1>
-          </a>
-          <i className="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-          <i className="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-        </div>
-      </header>
       <section className="hero">
         <div className="grid">
+
           <motion.div
-            style={{ opacity: -1.70 + ((scrollYProgress.get() * 2.5)), transform: 'translateX(' + (-100 + scrollYProgress.get() * 110) + 'vh)' }}
+            style={{ opacity: -1.70 + ((scrollYProgress.get() * 2.5)), }}
           >
             <div className='advice1'>
               {showResults ?
@@ -86,10 +80,10 @@ export default function App() {
             </div>
             <form className="d-flex sticky" >
               <div className="dropdown inputbtn">
-                <AutoCompleteInputType/>
+                <AutoCompleteInputType />
               </div>
               <div className="dropdown">
-                <AutoCompleteOutputType/>
+                <AutoCompleteOutputType />
               </div>
               <div className="d-flex align-items-center" >
                 <div>
@@ -110,7 +104,25 @@ export default function App() {
               </div>
             </motion.div>
           </div>
-          <div></div>
+          <motion.div
+            style={{ opacity: -1.70 + ((scrollYProgress.get() * 2.5)), transform: 'translateX(' + (110 + scrollYProgress.get() * -110) + 'vh)' }}
+          >
+            <div className='meme'>
+              <div className='blockMeme'>
+              <div>
+                {showResults ?
+                  <Gif />
+                  : null}
+              </div>
+              <div>
+                {showResults ?
+                  <Joke />
+                  : null}
+              </div>
+              </div>
+            </div>
+
+          </motion.div>
         </div>
       </section >
     </div >

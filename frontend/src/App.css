@@ -41,6 +41,37 @@
   justify-content: center;
 }
 
+
+.meme {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.meme .blockMeme {
+  
+  color: #ffffff;
+  position: sticky;
+  top: 35vh;
+  width: 200px;
+
+}
+
+.meme .blockMeme p {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.meme .blockMeme img {
+  
+  width: 100%;
+ 
+}
+
+
 .advice1{
   display: flex;
   height: 100%;
@@ -49,9 +80,10 @@
 }
 
 .advice1 p {
+  text-align: center;
   color: #ffffff;
   position: sticky;
-  top: 30vh;
+  top: 40vh;
 }
 
 .grid{
