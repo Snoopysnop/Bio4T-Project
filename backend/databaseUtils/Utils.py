@@ -45,11 +45,51 @@ class Utils:
         result = graph_db.run(requete.creer_Requete())
         return result.data()
     
-    def request_workflow(self, input, output, deepth):
+    def request_workflow(self, input, output, depth, limit):
         graph_db = self.connect()
         requete = Requete(None)
-        result = graph_db.run(requete.getWorkflows(input, output, deepth))
-        return result.data()
+        result = graph_db.run(requete.getWorkflows(input, output, depth))
+        data = json.loads(json.dumps(result.data()))
+
+        #On trie les workflows reçus
+        
+        nbAcceptedWorkflow = 0
+        workflow_tab = []       #le tab des worklows que l on va accepter
+        workflow_id = 0         #on colle un id pour chaque workflow
+        for i in data :         #on parcourt les 'apoc.path.elements(p)'
+            score = 0
+            nbTools = 1
+            for j in range(1,len(i["apoc.path.elements(p)"]),2):   #on parcourt les elements de la liste 'apoc.path.elements(p)' de 2 en 2 car le score est entre 2 tools
+                nbTools +=1
+                score += i["apoc.path.elements(p)"][j]["score"]    #recup la valeur de l id score
+            workflow_tab.append((score/nbTools,workflow_id))    #score : moyenne en f du nb d outils
+            nbAcceptedWorkflow+=1 
+            workflow_id += 1 
+
+        workflow_tab = Utils.quicksort(workflow_tab)      #on trie pour avoir le meilleur score
+
+        nbToWrite = nbAcceptedWorkflow
+        if(nbAcceptedWorkflow>limit):
+            nbToWrite = limit
+
+        workflows = []
+        for i in range(nbToWrite):     #on rebuild le json mais dans le bon ordre et seulement avec les workflow utiles
+            (score,pos) = workflow_tab[i]
+            workflows.append(data[pos])
+        return json.dumps(workflows)
+
+    def quicksort(tab):
+        if len(tab) <= 1:  # Cas de base 
+            return tab
+        
+        (pivot,id) = tab[0] # ça prend le score et on divise la liste en 2 
+        left = [(x,id) for (x,id) in tab[1:] if x >= pivot]
+        right = [(x,id) for (x,id) in tab[1:] if x < pivot]
+        
+        left = Utils.quicksort(left) # Trie recursivement chaque sous-liste
+        right = Utils.quicksort(right)
+        
+        return left + [(pivot,id)] + right # Concat les sous-listes triees pour obtenir la liste triee complete
     
     def request_topicsListWithFilter(self,filter):
         #TODO vérifier le paramètre pour éviter l'injection de code
@@ -99,4 +139,4 @@ class Utils:
 if __name__ == "__main__":
     utils = Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
    
-    print(utils.request_topicsListWithFilter('acc'))
+    print(utils.request_workflow("Accession", "Sequence alignment", 4, 10))
