@@ -7,7 +7,7 @@ interface Result {
   name: string;
 }
 
-function SearchInputBar() {
+function SearchInputBar({inputValue, updateInputValue}: {inputValue: string, updateInputValue: (value: string) => void}) {  
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
 
@@ -15,21 +15,23 @@ function SearchInputBar() {
     async function fetchData() {
       const response = await ApiInput(query);
       var array = JSON.parse(response);
-      console.log(query)
-      console.log(array)
       setResults(array);
     }
     fetchData();
   }, [query]);
 
   function handleInput(input: any) {
-    console.log(input)
     setQuery(input);
   }
 
   function handleChange(selectedOption: any) {
-    console.log(selectedOption)
     setQuery(selectedOption ? selectedOption.value : '');
+    if (selectedOption != null) {
+      updateInputValue(selectedOption.value);
+    } else {
+      updateInputValue("");
+
+    }
   }
 
   
@@ -48,7 +50,7 @@ function SearchInputBar() {
 
     container: (provided: any) => ({
       ...provided,
-      width: 100,
+      width: 130,
     }),
 
     dropdownIndicator: (provided: any) => ({
@@ -77,7 +79,7 @@ function SearchInputBar() {
   return (
     <AsyncSelect
     
-      value={{ value: query, label: query }}
+      value={query ? { value: query, label: query } :null}
       onInputChange={(value, action) => {
         // only set the input when the action that caused the
         // change equals to "input-change" and ignore the other
@@ -90,7 +92,7 @@ function SearchInputBar() {
       options={options}
       isClearable={true}
       filterOption={() => true}
-      placeholder="Search for items"
+      placeholder="Input"
       styles={customStyles}
       
     />

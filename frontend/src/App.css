@@ -98,7 +98,6 @@
 
 .menu {
   display: flex;
-  flex-direction: column;
   justify-content: center;
 }
 
@@ -113,6 +112,9 @@
 
 @media only screen and (max-width: 1000px) {
   .advice1 {
+    display: none;
+  }
+  .meme {
     display: none;
   }
 }
@@ -133,17 +135,55 @@
 }
 
 .sticky {
+  
   position: sticky;
   top: 17vh;
 
 }
 
+.moreOption{
+  margin: 10px;
+  color: #5f5f5f;
+  z-index: 50;
+}
+
+.error{
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: -10px;
+
+}
+.error p {
+  color: rgb(190, 0, 0)
+}
+.moreOption input{
+  padding: 8px;
+  width: 120px;
+  height: 30px;
+  border: none;
+  margin-bottom: 8px;
+  box-shadow: 5px 5px 5px #ff9100;
+  border-radius: 10px;
+  background: #fff;
+  outline: none;
+
+}
+
+.moreOption input:hover{
+  background-color: #ffffff;
+  color: grey;
+  outline: none;
+}
+
+.all{
+  width: 600px;
+  
+}
+
 .all form {
   
   box-shadow: 5px 5px 5px #ff9100;
-  width: 500px;
-  
-  border-width: 3px;
+  z-index: 100;
   border-color: var(--color-primary);
   border-radius: 10px;
   background: #fff;
@@ -187,12 +227,10 @@
 
   box-shadow: 5px 5px 8px #ff9100;
   margin-bottom: 18vh;
-  margin-top: 32vh;
-  width: 500px;
+  width: 600px;
   background: #ffffff;
   height: 50vh;
   border: solid;
-  border-width: 3px;
   border-color: var(--color-primary);
   border-radius: 10px;
 
