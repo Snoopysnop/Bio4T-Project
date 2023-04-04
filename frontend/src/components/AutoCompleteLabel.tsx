@@ -7,7 +7,7 @@ interface Result {
   name: string;
 }
 
-function SearchLabelBar() {
+function SearchLabelBar({ labelValue, updateLabelValue }: { labelValue: string, updateLabelValue: (value: string) => void }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
 
@@ -22,6 +22,13 @@ function SearchLabelBar() {
 
   function handleChange(selectedOption: any) {
     setQuery(selectedOption ? selectedOption.value : '');
+    if (selectedOption != null) {
+      updateLabelValue(selectedOption.value);
+    } else {
+      updateLabelValue("");
+
+    }
+
   }
 
   const options = results.map(result => ({ value: result.name, label: result.name }));
@@ -39,7 +46,7 @@ function SearchLabelBar() {
 
     container: (provided: any) => ({
       ...provided,
-      width: 180,
+      width: 220,
     }),
 
     dropdownIndicator: (provided: any) => ({
@@ -68,23 +75,24 @@ function SearchLabelBar() {
 
   return (
     <AsyncSelect
-    
-      value={{ value: query, label: query }}
+
+      value={query ? { value: query, label: query } : null}
       onInputChange={(value, action) => {
         // only set the input when the action that caused the
         // change equals to "input-change" and ignore the other
         // ones like: "set-value", "input-blur", and "menu-close"
         if (action.action === "input-change") setQuery(value); // <---
       }}
+
       blurInputOnSelect={true} //set by default, but to be sure
       closeMenuOnSelect={true}
       onChange={handleChange}
       options={options}
       isClearable={true}
       filterOption={() => true}
-      placeholder="Search for items"
+      placeholder="Topic"
       styles={customStyles}
-      
+
     />
   );
 }

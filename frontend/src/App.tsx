@@ -8,21 +8,54 @@ import Gif from './components/Gif';
 import AutoCompleteLabel from './components/AutoCompleteLabel';
 import AutoCompleteInputType from './components/AutoCompleteInputType';
 import AutoCompleteOutputType from './components/AutoCompleteOutputType';
+import ApiForm from './components/apiForm'
 import Joke from './components/Joke'
-
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
-import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { useEffect } from 'react';
 
 export default function App() {
 
+  const [showError, setShowError] = React.useState(false);
   const [showResults, setShowResults] = React.useState(false);
   const { scrollYProgress } = useScroll();
   const [value, setValue] = React.useState(0);
+  const [inputValue, updateInputValue] = React.useState("");
+  const [outputValue, updateOutputValue] = React.useState("");
+  const [labelValue, updateLabelValue] = React.useState("");
+  const [workflow, setWorkflow] = React.useState("");
+  const [showMoreOptions, setShowMoreOptions] = React.useState<boolean>(false);
+  const [depth, setDepth] = React.useState<number>(2);
+  const [limit, setLimit] = React.useState<number>(2);
+  const [validated, setValidated] = React.useState(false);
 
-  const onClick = () => {
-    setShowResults(true);
-    setTimeout(() => { document.getElementById("rfcanva")?.scrollIntoView({ behavior: "smooth", block: "start" }) }, 1);
+  async function onClick() {
+    if (inputValue == "" || outputValue == "" || labelValue == "") {
+      setShowError(true);
+      if (validated != true) scrollYProgress.set(0);
+
+    }
+    else {
+      setValidated(true)
+      setShowError(false)
+      setShowResults(true);
+      setTimeout(() => { document.getElementById("rfcanva")?.scrollIntoView({ behavior: "smooth", block: "start" }) }, 1);
+      const wf = await ApiForm(inputValue, outputValue, labelValue, depth, limit);
+      setWorkflow(wf);
+    }
   }
+
+  useEffect(() => {
+    console.log("input")
+    console.log(inputValue)
+  }, [inputValue]);
+  useEffect(() => {
+    console.log("output")
+    console.log(outputValue)
+  }, [outputValue]);
+  useEffect(() => {
+    console.log("label")
+    console.log(labelValue)
+  }, [labelValue]);
 
   /**
    * Animation on scroll function and init
@@ -36,62 +69,99 @@ export default function App() {
     setValue(1 - scrollYProgress.get())
   });
 
+  function handleDepthChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = Number(event.target.value);
+    if (value >= 2 && value <= 8) {
+      setDepth(value);
+    }
+  }
+
+  function handleLimitChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = Number(event.target.value);
+    if (value >= 2 && value <= 8) {
+      setLimit(value);
+    }
+  }
+
+  function toggleMoreOptions() {
+    if (validated != true) scrollYProgress.set(0);
+    setShowMoreOptions(!showMoreOptions);
+  }
 
   return (
     <div>
       <section className="hero">
-        <div className="grid">
-
+        <div className="all">
           <motion.div
-            style={{ opacity: -1.70 + ((scrollYProgress.get() * 2.5)), }}
+            style={{ opacity: (1 - (scrollYProgress.get() * 1.2)) }}
           >
-            <div className='advice1'>
-              {showResults ?
-                <p data-aos="fade-right" data_aos-delay="400">blablablblablablabla
-                  blablablblablablabla blablablblablablabla blablablblablablabla
-                  blablablblablablabla blablablblablablabla blablablblablablabla
-                  blablablblablablabla blablablblablablabla blablablblablablabla
-                  blablablblablablabla blablablblablablabla
-                </p>
-                : null}
-            </div>
-          </motion.div>
-
-          <div className="all">
             <div className='menu'>
               <div className="text" >
-                <motion.div
-                  style={{ opacity: (1 - (scrollYProgress.get() * 2.5)), transform: 'translateX(' + scrollYProgress.get() * 100 + 'vh)' }}
-                >
-                  <h2 data-aos="fade-up" data-aos-delay="100">All your tools on hand</h2>
-                </motion.div>
-
-                <motion.div
-                  style={{ opacity: (1 - (scrollYProgress.get() * 2.5)), transform: 'translateX(' + scrollYProgress.get() * -100 + 'vh)' }}
-                >
-                  <p data-aos="fade-up" data-aos-delay="100">blablablblablablabla
-                    blablablblablablabla blablablblablablabla blablablblablablabla
-                    blablablblablablabla blablablblablablabla blablablblablablabla
-                    blablablblablablabla blablablblablablabla blablablblablablabla
-                    blablablblablablabla blablablblablablabla</p>
-                </motion.div>
-
+                <h2 data-aos="fade-up" data-aos-delay="100">All your tools on hand</h2>
+                <p data-aos="fade-up" data-aos-delay="100">blablablblablablabla
+                  blablablblablablabla blablablblablablabla blablablblablablabla
+                  blablablblablablabla blablablblablablabla blablablblablablabla
+                  blablablblablablabla blablablblablablabla blablablblablablabla
+                  blablablblablablabla blablablblablablabla</p>
               </div>
             </div>
-            <form className="d-flex sticky" >
+          </motion.div>
+          <div className="sticky" >
+            <form>
               <div className="dropdown inputbtn">
-                <AutoCompleteInputType />
+                <AutoCompleteInputType inputValue={inputValue} updateInputValue={updateInputValue} />
               </div>
               <div className="dropdown">
-                <AutoCompleteOutputType />
+                <AutoCompleteOutputType outputValue={outputValue} updateOutputValue={updateOutputValue} />
               </div>
               <div className="d-flex align-items-center" >
                 <div>
-                  <AutoCompleteLabel />
+                  <AutoCompleteLabel labelValue={labelValue} updateLabelValue={updateLabelValue} />
                 </div>
               </div>
               <button type="button" className="btn btn-secondary btnfont" onClick={onClick}>Search</button>
             </form>
+            {showError ?
+              <div className='error'>
+                <p>
+                  At least one element is missing !
+                </p>
+              </div>
+              : null}
+            <div className='moreOption'>
+              {showMoreOptions ? (
+                <>
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <div style={{ display: "flex", flexDirection: "column", marginRight: "16px" }}>
+                      <label htmlFor="depth" style={{ marginBottom: "4px" }}>
+                        Depth :
+                      </label>
+                      <input type="number" id="depth" value={depth} onChange={handleDepthChange} min="2" max="8" />
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <label htmlFor="limit" style={{ marginBottom: "4px" }}>
+                        Limit :
+                      </label>
+                      <input type="number" id="limit" value={limit} onChange={handleLimitChange} min="2" max="8" />
+                    </div>
+                  </div>
+                  <div
+                    style={{ fontWeight: "bold", textDecoration: "underline", cursor: "pointer", marginLeft: "8px" }}
+                    onClick={toggleMoreOptions}
+                  >
+                    Less options
+                  </div>
+                </>
+              ) : (
+                <div
+                  style={{ fontWeight: "bold", textDecoration: "underline", cursor: "pointer" }}
+                  onClick={toggleMoreOptions}
+                >
+                  More options
+                </div>
+              )}
+            </div>
+
             <motion.div
               style={{ opacity: (scrollYProgress.get() * 2.5) }}
             >
@@ -104,25 +174,7 @@ export default function App() {
               </div>
             </motion.div>
           </div>
-          <motion.div
-            style={{ opacity: -1.70 + ((scrollYProgress.get() * 2.5)), transform: 'translateX(' + (110 + scrollYProgress.get() * -110) + 'vh)' }}
-          >
-            <div className='meme'>
-              <div className='blockMeme'>
-              <div>
-                {showResults ?
-                  <Gif />
-                  : null}
-              </div>
-              <div>
-                {showResults ?
-                  <Joke />
-                  : null}
-              </div>
-              </div>
-            </div>
 
-          </motion.div>
         </div>
       </section >
     </div >

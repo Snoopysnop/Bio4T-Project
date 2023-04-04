@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ApiOutput from './apiOutput';
-import AsyncSelect  from 'react-select';
+import AsyncSelect from 'react-select';
 
 interface Result {
   id: number;
   name: string;
 }
 
-function SearchOutputBar() {
+function SearchOutputBar({ outputValue, updateOutputValue }: { outputValue: string, updateOutputValue: (value: string) => void }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
 
@@ -15,7 +15,6 @@ function SearchOutputBar() {
     async function fetchData() {
       const response = await ApiOutput(query);
       var array = JSON.parse(response);
-      console.log(array)
       setResults(array);
     }
     fetchData();
@@ -25,11 +24,15 @@ function SearchOutputBar() {
 
 
   function handleChange(selectedOption: any) {
-    console.log(selectedOption)
     setQuery(selectedOption ? selectedOption.value : '');
-  }
+    if (selectedOption != null) {
+      updateOutputValue(selectedOption.value);
+    } else {
+      updateOutputValue("");
 
-  
+    }  }
+
+
   const options = results.map(result => ({ value: result.name, label: result.name }));
 
   const customStyles = {
@@ -45,7 +48,7 @@ function SearchOutputBar() {
 
     container: (provided: any) => ({
       ...provided,
-      width: 100,
+      width: 130,
     }),
 
     dropdownIndicator: (provided: any) => ({
@@ -69,14 +72,14 @@ function SearchOutputBar() {
         color: state.isSelected ? 'white' : provided.color,
       },
     }),
-   
+
 
   };
 
   return (
     <AsyncSelect
-    
-      value={{ value: query, label: query }}
+
+      value={query ? { value: query, label: query } : null}
       onInputChange={(value, action) => {
         // only set the input when the action that caused the
         // change equals to "input-change" and ignore the other
@@ -89,9 +92,9 @@ function SearchOutputBar() {
       options={options}
       isClearable={true}
       filterOption={() => true}
-      placeholder="Search for items"
+      placeholder="Output"
       styles={customStyles}
-      
+
     />
   );
 }
