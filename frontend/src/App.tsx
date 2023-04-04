@@ -41,18 +41,22 @@ export default function App() {
       setTimeout(() => { document.getElementById("rfcanva")?.scrollIntoView({ behavior: "smooth", block: "start" }) }, 1);
       const wf = await ApiForm(inputValue, outputValue, labelValue, depth, limit);
       setWorkflow(wf);
+      console.log(workflow)
     }
   }
 
   useEffect(() => {
+    if (validated != true) scrollYProgress.set(0);
     console.log("input")
     console.log(inputValue)
   }, [inputValue]);
   useEffect(() => {
+    if (validated != true) scrollYProgress.set(0);
     console.log("output")
     console.log(outputValue)
   }, [outputValue]);
   useEffect(() => {
+    if (validated != true) scrollYProgress.set(0);
     console.log("label")
     console.log(labelValue)
   }, [labelValue]);
@@ -78,7 +82,7 @@ export default function App() {
 
   function handleLimitChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = Number(event.target.value);
-    if (value >= 2 && value <= 8) {
+    if (value >= 2 && value <= 10) {
       setLimit(value);
     }
   }
@@ -142,7 +146,7 @@ export default function App() {
                       <label htmlFor="limit" style={{ marginBottom: "4px" }}>
                         Limit :
                       </label>
-                      <input type="number" id="limit" value={limit} onChange={handleLimitChange} min="2" max="8" />
+                      <input type="number" id="limit" value={limit} onChange={handleLimitChange} min="2" max="10" />
                     </div>
                   </div>
                   <div

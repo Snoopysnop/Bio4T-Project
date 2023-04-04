@@ -149,4 +149,4 @@ class Utils:
 # TODO: A retirer. Utilisé juste pour les tests
 if __name__ == "__main__":
     utils = Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
-    print(utils.request_workflow())
+    print(utils.request_workflow("Accession", "Sequence alignment", "Nucleic acids", 4, 10))

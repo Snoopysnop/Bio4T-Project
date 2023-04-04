@@ -75,12 +75,17 @@ def create_app():
         input = request.get_json()["json"]["input"]
         output = request.get_json()["json"]["output"]
         label = request.get_json()["json"]["label"]
-        depth = request.get_json()["json"]["depth"]
-        limit = request.get_json()["json"]["limit"]
+        depth = int(request.get_json()["json"]["depth"])
+        limit = int(request.get_json()["json"]["limit"])
+        print(input)
+        print(output)
+        print(label)
+        print(depth)
+        print(limit)
 
         utils = create_utils()
         result = utils.request_workflow(input, output, label, depth, limit)
-
+        print(result)
         jsonResult = json.dumps(result)
         print(jsonResult)
         return jsonResult
