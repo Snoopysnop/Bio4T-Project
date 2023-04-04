@@ -171,7 +171,8 @@ def importation(ip, user, password, file):
             SET ct.input = [input.term],
                 ct.output = [output.term],
                 ct.topics = [topic.term],
-                ct.toolID = t.biotoolsID
+                ct.toolID = t.biotoolsID,
+                ct.trustScore = 0
         ON MATCH
             SET ct.input = CASE WHEN input.term IN ct.input THEN ct.input ELSE ct.input + [input.term] END,
                 ct.output = CASE WHEN output.term IN ct.output THEN ct.output ELSE ct.output + [output.term] END,
@@ -217,4 +218,4 @@ if __name__ == "__main__":
     IP = "bolt://localhost:7687"
     USER = "neo4j"
     PASSWORD = "bio4tdummy"
-    importation(IP, USER, PASSWORD, "data.json")
+    importation(IP, USER, PASSWORD, "datatest.json")

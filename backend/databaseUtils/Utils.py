@@ -29,6 +29,7 @@ class Utils:
         self.ip = ip
         self.user = user
         self.password = password
+        self.graph = Graph(ip, auth=(self.user, self.password))
 
     def connect(self):
         return Graph(self.ip, auth=(self.user, self.password))
@@ -45,7 +46,7 @@ class Utils:
         result = graph_db.run(requete.creer_Requete())
         return result.data()
     
-    def request_workflow(self, input, output, depth, limit):
+    def request_workflow(self, input, output, label, depth, limit):
         graph_db = self.connect()
         requete = Requete(None)
         result = graph_db.run(requete.getWorkflows(input, output, depth))
@@ -53,17 +54,27 @@ class Utils:
 
         #On trie les workflows reçus
         
+        
         nbAcceptedWorkflow = 0
         workflow_tab = []       #le tab des worklows que l on va accepter
         workflow_id = 0         #on colle un id pour chaque workflow
-        for i in data :         #on parcourt les 'apoc.path.elements(p)'
+        for i in data :         #on parcourt les 'workflows'
             score = 0
+            co_score = 0
+            trust_score = 0
             nbTools = 1
-            for j in range(1,len(i["apoc.path.elements(p)"]),2):   #on parcourt les elements de la liste 'apoc.path.elements(p)' de 2 en 2 car le score est entre 2 tools
+            Btopic = False
+            for j in range(1,len(i["workflows"]),2):   #on parcourt les elements de la liste 'workflows' de 2 en 2 car le score est entre 2 tools
                 nbTools +=1
-                score += i["apoc.path.elements(p)"][j]["score"]    #recup la valeur de l id score
-            workflow_tab.append((score/nbTools,workflow_id))    #score : moyenne en f du nb d outils
-            nbAcceptedWorkflow+=1 
+                co_score += i["workflows"][j]["score"]    #recup la valeur de l id score
+            for j in range(0,len(i["workflows"]),2):
+                trust_score += i["workflows"][j]["trustScore"]
+                score = (0.6*trust_score + 0.4*co_score)/((2*nbTools)-1)
+                if(label in i["workflows"][j]["topics"]):
+                    Btopic = True
+            if(Btopic == True):
+                workflow_tab.append((score,workflow_id))    #score : moyenne en f du nb d outils
+                nbAcceptedWorkflow+=1 
             workflow_id += 1 
 
         workflow_tab = Utils.quicksort(workflow_tab)      #on trie pour avoir le meilleur score

@@ -89,11 +89,11 @@ class Requete:
             """
         return self.requete
 
-    def getWorkflows(self, input, output, deepth):
+    def getWorkflows(self, input, output, depth):
         return f"""
-        MATCH p = (t1:CompatibleTool)-[:isCompatible *0..{deepth}]->(t2:CompatibleTool)
+        MATCH p = (t1:CompatibleTool)-[:isCompatible *0..{depth}]->(t2:CompatibleTool)
         WHERE "{input}" IN t1.input AND "{output}" IN t2.output
-        RETURN apoc.path.elements(p)
+        RETURN apoc.path.elements(p) AS workflows
         """
 
     # Renvoie une liste de tous les topics des compatiblesTools
