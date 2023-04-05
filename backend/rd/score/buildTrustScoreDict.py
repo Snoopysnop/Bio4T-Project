@@ -78,5 +78,6 @@ def buildTrustScoreList(tools):
 
 trustScoreList = buildTrustScoreList(getAllToolsFromJson("backend/data/data.json"))
 
-f = open("backend/rd/score/trust_scores.txt", "w")
-f.write(str(trustScoreList))
+f = open("backend/rd/score/trust_scores.json", "w")
+f.write({"items": trustScoreList})
+f.close()
