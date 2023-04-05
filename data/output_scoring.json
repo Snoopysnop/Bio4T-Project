@@ -1,0 +1,1 @@
+{"items": [{"tool1": 7597, "name1": "Kingfisher", "tool2": 7588, "name2": "mlplasmids", "score": 0.0}, {"tool1": 7597, "name1": "Kingfisher", "tool2": 7599, "name2": "HMMER3", "score": 1.0}, {"tool1": 7598, "name1": "MAFFT", "tool2": 7599, "name2": "HMMER3", "score": 297.0}, {"tool1": 7599, "name1": "HMMER3", "tool2": 7598, "name2": "MAFFT", "score": 297.0}]}

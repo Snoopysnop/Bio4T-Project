@@ -2,7 +2,7 @@ import requests
 from xml.etree import ElementTree
 import database_requests
 
-def make_pmc_api_request(tool_name_1, tool_name_2, number_of_results = 10):
+def make_pmc_api_request(tool_name_1, tool_name_2 = None, number_of_results = 10):
     """Make a request on PubMed API to get the list of publications which contains the tool_name_1 and the tool_name_2.
 
     Args:
@@ -16,11 +16,19 @@ def make_pmc_api_request(tool_name_1, tool_name_2, number_of_results = 10):
     Returns:
         json: A JSON with the list of publication.
     """
-    dict_params = {
-        "query": f"{tool_name_1} AND {tool_name_2} AND (HAS_FT:Y) AND (((SRC:MED OR SRC:PMC OR SRC:AGR OR SRC:CBA) NOT (PUB_TYPE:\"Review\")))",
-        "format": "json",
-        "pageSize": number_of_results
-    }
+
+    if tool_name_2 is None:
+        dict_params = {
+            "query": f"{tool_name_1} AND (HAS_FT:Y) AND (((SRC:MED OR SRC:PMC OR SRC:AGR OR SRC:CBA) NOT (PUB_TYPE:\"Review\")))",
+            "format": "json",
+            "pageSize": number_of_results
+        }
+    else:
+        dict_params = {
+            "query": f"{tool_name_1} AND {tool_name_2} AND (HAS_FT:Y) AND (((SRC:MED OR SRC:PMC OR SRC:AGR OR SRC:CBA) NOT (PUB_TYPE:\"Review\")))",
+            "format": "json",
+            "pageSize": number_of_results
+        }
     response = requests.get(f"https://www.ebi.ac.uk/europepmc/webservices/rest/search", params=dict_params)
     if response.status_code == 200:
         return response.json()
@@ -43,7 +51,7 @@ def get_scientific_article(article_id):
     except ElementTree.ParseError:
         return ''
 
-def get_number_of_results(tool_name_1, tool_name_2):
+def get_number_of_results(tool_name_1, tool_name_2 = None):
     json_res = make_pmc_api_request(tool_name_1, tool_name_2)
     return json_res['hitCount']
 
