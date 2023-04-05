@@ -1,7 +1,8 @@
+import React from "react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
-export default function AnimateParticles() {
+const AnimateParticles= React.memo(() => {
 
   const particlesInit = async (main : any) => {
     console.log(main);
@@ -218,4 +219,6 @@ return (
       }}
       />
 );
-}
+});
+
+export default AnimateParticles

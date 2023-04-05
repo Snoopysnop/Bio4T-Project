@@ -17,25 +17,28 @@
   padding-left: 20px;
 }
 
-
-.header {
-  height: 12vh;
-  display: flex;
-  align-items: center;
-
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff00;
+  z-index: 9999;
 }
 
-.header h1 {
-  font-size: 30px;
-  margin: 0;
-  font-weight: 700;
-  color: #fff;
-  font-family: var(--font-sketch);
+.particles{
+  z-index: -1;
+}
+
+.logo img{
+  width: 118px;
+  height: 84px;
+  float: left;
+  margin-left: 20px;
 }
 
 .hero {
   contain: paint;
-  background-color: #131313;
   min-height: 100vh;
   display: flex;
   justify-content: center;
