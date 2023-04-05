@@ -12,7 +12,7 @@ import ApiForm from './components/apiForm'
 import Joke from './components/Joke'
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
 import { useEffect } from 'react';
-
+import image from './logo1.png'
 export default function App() {
 
   const [showError, setShowError] = React.useState(false);
@@ -94,6 +94,12 @@ export default function App() {
 
   return (
     <div>
+      <header>
+        <div className="logo">
+          <img src={image} />
+        </div>
+      </header>
+
       <section className="hero">
         <div className="all">
           <motion.div
@@ -102,11 +108,9 @@ export default function App() {
             <div className='menu'>
               <div className="text" >
                 <h2 data-aos="fade-up" data-aos-delay="100">All your tools on hand</h2>
-                <p data-aos="fade-up" data-aos-delay="100">blablablblablablabla
-                  blablablblablablabla blablablblablablabla blablablblablablabla
-                  blablablblablablabla blablablblablablabla blablablblablablabla
-                  blablablblablablabla blablablblablablabla blablablblablablabla
-                  blablablblablablabla blablablblablablabla</p>
+                <p data-aos="fade-up" data-aos-delay="100">Bio4T is an advanced <strong>search engine</strong> made for bioinformaticians.<br/>
+                 Find all the tools you need with <strong>workflows</strong> made from a big database.<br/>
+                  Select an <strong>input</strong>, an <strong>output</strong> and optionnaly a <strong>topic</strong> to start.</p>
               </div>
             </div>
           </motion.div>
@@ -181,6 +185,9 @@ export default function App() {
 
         </div>
       </section >
+      <div className='particles'>
+        <AnimateParticles />
+      </div>
     </div >
   );
 }
