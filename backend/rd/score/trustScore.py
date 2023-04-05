@@ -1,12 +1,16 @@
 from datetime import datetime
 from biotools import *
  
+
 def getCitationCount(tool_detail):
 
     citation_count = 0
 
     for publication in tool_detail["publication"]:
-        citation_count  += publication["metadata"]["citationCount"]
+        try:
+            citation_count  += publication["metadata"]["citationCount"]
+        except:
+            citation_count += 0
     return citation_count
 
 
@@ -95,12 +99,4 @@ def trustScore(tool):
 
 
     return 0.1*validated_score+0.5*last_update_age_score+0.4*citation_count_score
-
-    
-
-
-print(trustScore("blast"))
-
-
-
 
