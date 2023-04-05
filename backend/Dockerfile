@@ -6,6 +6,7 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD [ "python", "apiFlask.py" ]
+RUN apt-get update && \
+    apt-get install -y netcat
 
 EXPOSE 5000

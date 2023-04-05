@@ -31,11 +31,10 @@ def getPublications(tool):
     publications = []
 
     for publication in toolDetail(tool)["publication"]:
-        publications.append({
-            "doi": publication["doi"],
-            "pmid": publication["pmid"],
-            "pmcid": publication["pmcid"]
-        })
+        
+        publications.append(
+            {"doi": publication["doi"], "pmid": publication["pmid"], "pmcid": publication["pmcid"]}
+        )
 
     return publications
 
@@ -121,6 +120,6 @@ def buildCoPublicationDict(all_publications):
 
 
 
-_all_publications_in_common = buildCoPublicationDict(getAllPublication(getAllToolsFromJson("/../../data/data.json")))
-_f = open("co_publications.json", "w")
+_all_publications_in_common = buildCoPublicationDict(getAllPublication(getAllToolsFromJson("backend/data/data.json")))
+_f = open("backend/rd/score/co_publications.json", "w")
 _f.write(str(_all_publications_in_common))

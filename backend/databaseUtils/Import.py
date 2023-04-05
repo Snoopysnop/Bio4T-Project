@@ -1,6 +1,8 @@
 from py2neo import Graph
-
+import sys
+import os
 def importation(ip, user, password, file):
+    print("=============",ip )
     graph_db = Graph(ip, auth=(user, password))
 
     # Nettoyage avant importation
@@ -224,7 +226,10 @@ def clear_database(ip, user, password):
 
 
 if __name__ == "__main__":
-    IP = "bolt://localhost:7687"
+    SERVER = os.getenv('NEOSERVER', "localhost")
+    PORT = os.getenv('NEOPORT', "7687")
+    IP = "bolt://%s:%s" %(SERVER,PORT)
     USER = "neo4j"
     PASSWORD = "bio4tdummy"
+    print(IP)
     importation(IP, USER, PASSWORD, "datatest.json")

@@ -5,9 +5,14 @@ import sqlite3
 import json
 from datetime import datetime
 import Utils as dbUtils
+import os
 
+SERVER = os.getenv('NEOSERVER', "localhost")
+PORT = os.getenv('NEOPORT', "7687")
+IP = "bolt://%s:%s" %(SERVER,PORT)
+print(IP)
 def create_utils():
-    return dbUtils.Utils("bolt://localhost:7687", "neo4j", "bio4tdummy")
+    return dbUtils.Utils(IP, "neo4j", "bio4tdummy")
 
 def create_app():
 
@@ -86,9 +91,7 @@ def create_app():
         utils = create_utils()
         result = utils.request_workflow(input, output, label, depth, limit)
         print(result)
-        jsonResult = json.dumps(result)
-        print(jsonResult)
-        return jsonResult
+        return result
 
     return app 
 

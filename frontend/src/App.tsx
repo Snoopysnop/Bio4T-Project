@@ -13,6 +13,7 @@ import Joke from './components/Joke'
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
 import { useEffect } from 'react';
 import image from './logo1.png'
+
 export default function App() {
 
   const [showError, setShowError] = React.useState(false);
@@ -41,7 +42,7 @@ export default function App() {
       setTimeout(() => { document.getElementById("rfcanva")?.scrollIntoView({ behavior: "smooth", block: "start" }) }, 1);
       const wf = await ApiForm(inputValue, outputValue, labelValue, depth, limit);
       setWorkflow(wf);
-      console.log(workflow)
+      console.log(wf)
     }
   }
 
