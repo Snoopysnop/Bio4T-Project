@@ -233,3 +233,4 @@ if __name__ == "__main__":
     PASSWORD = "bio4tdummy"
     print(IP)
     importation(IP, USER, PASSWORD, "datatest.json")
+    import_scoring(IP, USER, PASSWORD, "output_scoring.json")
