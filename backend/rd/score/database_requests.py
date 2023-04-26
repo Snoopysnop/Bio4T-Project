@@ -5,8 +5,6 @@ import pmc_api
 from coScore import coScore
 from pathlib import Path
 
-# Il manque la fonction coScore pour que ça marche
-
 def connect_to_neo4j(user, password):
     """Function to connect to the Neo4J database
 
