@@ -2,7 +2,7 @@ import json
 import py2neo
 from nltk import tokenize
 import pmc_api
-from co_score.coScore import coScore
+from coScore import coScore
 from pathlib import Path
 
 # Il manque la fonction coScore pour que ça marche
