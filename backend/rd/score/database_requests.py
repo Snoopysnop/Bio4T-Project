@@ -213,8 +213,5 @@ def make_pmc_json(skip = 0):
             json.dump(dict_result, fichier)
 
 if __name__ == "__main__":
-    # print(Path(__file__) / "../data/output_scoring2.json")
-    # print((Path(__file__) / "../data/output_scoring2.json").resolve())
-    # print((Path(__file__).parent / "data/output_scoring2.json").resolve())
     pass
 
