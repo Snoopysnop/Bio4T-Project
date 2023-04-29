@@ -52,7 +52,9 @@ const Box = (param:BoxType) => {
       position: 'absolute',
       left: '615px',
       top: tops,
-      overflow:'scroll'
+      overflowY:'scroll',
+      overflowX:'hidden'
+
     }}>
       <div className='inner'>
         <a href={link} target='_blank'><b>{tool_name}</b></a>

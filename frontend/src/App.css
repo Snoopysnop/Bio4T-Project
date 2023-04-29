@@ -238,6 +238,10 @@ header {
   border-radius: 10px;
 }
 
+.reactflowCanva::-webkit-scrollbar{
+  display: none;
+}
+
 .list .reactflowCanva{
   margin-bottom: 18vh;
 }
@@ -264,7 +268,7 @@ header {
 .full #workflow_container{
   height: 200%;
   width: 100%;
-  overflow: scroll;
+  overflow: hidden;
   display: flex;
 }
 
@@ -286,9 +290,7 @@ header {
   height: 175px !important;
 }
 
-#workflow_container::-webkit-scrollbar{
-  display: none;
-}
+
 
 .inner{
   padding: 10px;
@@ -296,7 +298,7 @@ header {
 
 #minus, #plus{
   height: fit-content;
-  margin: auto;
+  margin: auto 10px;
   border-radius: 100%;
   /* position: absolute; */
   background-color: #FE9103;
