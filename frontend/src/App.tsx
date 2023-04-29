@@ -74,14 +74,14 @@ export default function App() {
     setValue(1 - scrollYProgress.get())
   });
 
-  function handleDepthChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function updateDepthValue(event: React.ChangeEvent<HTMLInputElement>) {
     const value = Number(event.target.value);
     if (value >= 2 && value <= 8) {
       setDepth(value);
     }
   }
 
-  function handleLimitChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function updateLimitValue(event: React.ChangeEvent<HTMLInputElement>) {
     const value = Number(event.target.value);
     if (value >= 2 && value <= 10) {
       setLimit(value);
@@ -145,13 +145,13 @@ export default function App() {
                       <label htmlFor="depth" style={{ marginBottom: "4px" }}>
                         Depth :
                       </label>
-                      <input type="number" id="depth" value={depth} onChange={handleDepthChange} min="2" max="8" />
+                      <input type="number" id="depth" value={depth} onChange={updateDepthValue} min="2" max="8" />
                     </div>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <label htmlFor="limit" style={{ marginBottom: "4px" }}>
                         Limit :
                       </label>
-                      <input type="number" id="limit" value={limit} onChange={handleLimitChange} min="2" max="10" />
+                      <input type="number" id="limit" value={limit} onChange={updateLimitValue} min="2" max="10" />
                     </div>
                   </div>
                   <div
