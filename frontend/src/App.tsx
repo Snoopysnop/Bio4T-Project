@@ -13,6 +13,8 @@ import Joke from './components/Joke'
 import { motion, useScroll, useMotionValueEvent } from "framer-motion"
 import { useEffect } from 'react';
 import image from './logo1.png'
+import WorkflowCarousel from './components/WorkflowCarousel';
+import WorkflowList from './components/WorkflowList';
 
 export default function App() {
 
@@ -23,11 +25,12 @@ export default function App() {
   const [inputValue, updateInputValue] = React.useState("");
   const [outputValue, updateOutputValue] = React.useState("");
   const [labelValue, updateLabelValue] = React.useState("");
-  const [workflow, setWorkflow] = React.useState("");
+  const [workflow, setWorkflow] = React.useState("{}");
   const [showMoreOptions, setShowMoreOptions] = React.useState<boolean>(false);
   const [depth, setDepth] = React.useState<number>(2);
   const [limit, setLimit] = React.useState<number>(2);
   const [validated, setValidated] = React.useState(false);
+  const [carouselVisible, setCarouselVisible] = React.useState(true);
 
   async function onClick() {
     if (inputValue == "" || outputValue == "" || labelValue == "") {
@@ -38,9 +41,9 @@ export default function App() {
     else {
       setValidated(true)
       setShowError(false)
+      const wf = await ApiForm(inputValue, outputValue, labelValue, depth, limit);
       setShowResults(true);
       setTimeout(() => { document.getElementById("rfcanva")?.scrollIntoView({ behavior: "smooth", block: "start" }) }, 1);
-      const wf = await ApiForm(inputValue, outputValue, labelValue, depth, limit);
       setWorkflow(wf);
       console.log(wf)
     }
@@ -92,6 +95,48 @@ export default function App() {
     if (validated != true) scrollYProgress.set(0);
     setShowMoreOptions(!showMoreOptions);
   }
+
+  function changeDisplay(){
+    setCarouselVisible(!carouselVisible)
+  }
+
+// modal export
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btns = document.querySelectorAll(".export");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btns.forEach((btn)=>{
+  btn.addEventListener("click",()=>{
+    modal!.style.display = "flex";
+    if(carouselVisible) modal!.style.top = (window.scrollY - 250) + "px";
+    else modal!.style.top = "70px";
+    modal!.querySelector("pre")!.textContent = JSON.stringify(JSON.parse(workflow)[parseInt(btn.id.slice(7))], null, 4)
+    document.body.style.overflow = 'hidden'
+  })
+})
+
+// When the user clicks on <span> (x), close the modal
+span?.addEventListener("click",()=>{
+  modal!.querySelector("pre")!.scrollTo(0,0)
+  modal!.style.display = "none";
+  document.body.style.overflow = 'auto'
+})
+
+// When the user clicks anywhere outside of the modal, close it
+window.addEventListener("click",(event)=>{
+  if (event.target == modal) {
+    modal!.querySelector("pre")!.scrollTo(0,0)
+    modal!.style.display = "none";
+    document.body.style.overflow = 'auto'
+  }
+})
+
 
   return (
     <div>
@@ -172,25 +217,31 @@ export default function App() {
             </div>
 
             <motion.div
-              style={{ opacity: (scrollYProgress.get() * 2.5) }}
+              style={{ opacity: (scrollYProgress.get() * 2.5), marginTop:'10%' }}
             >
-              <div id="rfcanva">
+              <div id="myModal" className="truemodal" style={{display:"none"}}>
+                <div className="modal-content">
+                  <span className="close">&times;</span>
+                  <pre></pre>
+                </div>
+              </div>
+               <div id="rfcanva">
                 {showResults ?
-                  <div className="reactflowCanva">
-                    <ReactFlowCanva />
+                  <div style={{width:"100%"}}>
+                    {!carouselVisible && <WorkflowCarousel json={workflow} ></WorkflowCarousel>}
+                    {carouselVisible && <WorkflowList json={workflow}></WorkflowList>}
                   </div>
                   : null}
+                  {showResults && <button id="changeWorkflowDisplay" type="button" className="btn btn-secondary btnfont" onClick={changeDisplay}></button>}              
               </div>
             </motion.div>
           </div>
 
         </div>
       </section >
-      <div className='particles'>
+      {/* <div className='particles'>
         <AnimateParticles />
-      </div>
+      </div> */}
     </div >
   );
 }
-
-
