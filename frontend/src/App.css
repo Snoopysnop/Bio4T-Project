@@ -23,7 +23,7 @@ header {
   left: 0;
   width: 100%;
   background-color: #ffffff00;
-  z-index: 9999;
+  /* z-index: 9999; */
 }
 
 .particles{
@@ -227,16 +227,19 @@ header {
 
 
 .reactflowCanva {
-
+  /*position: relative;*/
   box-shadow: 5px 5px 8px #ff9100;
-  margin-bottom: 18vh;
+  /* margin-bottom: 18vh; */
   width: 600px;
   background: #ffffff;
-  height: 50vh;
+  /* height: 50vh; */
   border: solid;
   border-color: var(--color-primary);
   border-radius: 10px;
+}
 
+.list .reactflowCanva{
+  margin-bottom: 18vh;
 }
 
 .inline {
@@ -244,5 +247,262 @@ header {
 }
 
 
+/* AJOUT */
+
+.full{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list{
+  height: 100%;
+  width: 100%;
+}
+
+.full #workflow_container{
+  height: 200%;
+  width: 100%;
+  overflow: scroll;
+  display: flex;
+}
+
+.list #workflow_container{
+  width: 100%;
+}
+
+.flow{
+  width: 100%;
+  min-width: -webkit-fill-available;
+  min-width: -moz-available;
+}
+
+.react-flow__node{
+  border-radius: 100%;
+}
+
+.react-flow{
+  height: 175px !important;
+}
+
+#workflow_container::-webkit-scrollbar{
+  display: none;
+}
+
+.inner{
+  padding: 10px;
+}
+
+#minus, #plus{
+  height: fit-content;
+  margin: auto;
+  border-radius: 100%;
+  /* position: absolute; */
+  background-color: #FE9103;
+  color: #ffffff;
+  border: solid #FE9103;
+  /* top: 45%; */
+}
+
+#minus:hover, #plus:hover{
+  background-color: #ffffff;
+  border: solid #FE9103;
+  color: gray;
+}
+/* 
+#minus{
+  left: -35px;
+}
+
+#plus{
+  right: -5px;
+} */
+
+#changeWorkflowDisplay{
+  height: fit-content;
+  margin-left: 10px;
+  /* position: relative; */
+  /* left: 10px; */
+  background-image: url(../public/change_icon.png);
+  background-color: #FE9103;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 30px;
+  height: 30px;
+  border: solid #FE9103;
+  align-self: end;
+  margin-bottom: 10px;
+
+}
+
+#changeWorkflowDisplay:hover{
+  background-image: url(../public/change_icon_hover.png);
+  background-color: #ffffff;
+  border: solid #FE9103;
+}
+
+#rfcanva{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column-reverse;
+}
+
+/* .flow div{
+  background: transparent !important;
+} */
+
+.react-flow__attribution{
+  display: none;
+}
+
+.item_list{
+  padding: 3px;
+  margin: 1px;
+  background-color: lightgray;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+body{
+  background-color: #131313 !important;
+}
+
+.flowButton{
+  width: fit-content;
+  margin-left: auto;
+}
+
+.flowButton button{
+  background-color: white;
+  color: grey;
+  border: none;
+  border-top: solid grey;
+  border-bottom: solid grey;
+  height: 25px;
+  width: 20px;
+}
+
+.flowButton button:hover{
+  background-color: grey;
+  color: white;
+}
+
+.flowButton button:active{
+  background-color: white;
+  color: grey;
+}
+
+.flowButton button:first-child{
+  border-radius: 7px 0px 0px 7px;
+  border-left: solid grey;
+}
+
+.flowButton button:last-child{
+  border-radius: 0px 7px 7px 0px;
+  border-right: solid grey;
+}
+
+.export{
+  background-image: url(../public/export_icon.png);
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.export:hover{
+  background-image: url(../public/export_icon_hover.png);
+}
+
+.export:active{
+  background-image: url(../public/export_icon.png);
+}
+
+.rating{
+  background-image: url(../public/star_icon.png);
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.rating:hover{
+  background-image: url(../public/star_icon_hover.png);
+}
+
+.rating:active{
+  background-image: url(../public/star_icon.png);
+}
 
 
+.execute{
+  background-image: url(../public/execute_icon.png);
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.execute:hover{
+  background-image: url(../public/execute_icon_hover.png);
+}
+
+.execute:active{
+  background-image: url(../public/execute_icon.png);
+}
+
+
+/* modal */
+.truemodal {
+  position: fixed !important; 
+  z-index: 1000 !important; 
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important; 
+  height: 100% !important; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+  align-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.modal-content {
+  background-color: #fefefe !important;
+  margin: 15% auto !important; 
+  padding: 20px !important;
+  border: 1px solid #888 !important;
+  border-radius: 10px !important;
+  height: 80vh !important;
+  width: 50% !important;
+}
+
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+} 
+
+pre{
+  height: 90%;
+}
+
+#wfCount{
+  margin-bottom: 18vh;
+  color: white;
+}
+
+.flexCarousel{
+  width: 100%;
+  display: flex;
+}

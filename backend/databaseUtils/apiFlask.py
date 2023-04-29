@@ -90,8 +90,20 @@ def create_app():
 
         utils = create_utils()
         result = utils.request_workflow(input, output, label, depth, limit)
-        print(result)
-        return result
+        
+        result_loop = json.loads(result)
+
+        for res in result_loop:
+            for x in res['workflows']:
+                if 'toolID' in x:
+                    tool = utils.request_ToolFromCompatibleTool(x['toolID'])
+                    tool = json.loads(json.dumps(tool))
+                    x.update({'description' : tool[0]['t']['description']})
+                    x.update({'homepage' : tool[0]['t']['homepage']})
+                # print(x)
+
+        # print(result_loop)
+        return json.dumps(result_loop)
 
     return app 
 

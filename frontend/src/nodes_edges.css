@@ -1,0 +1,49 @@
+.react-flow__node {
+  font-family: 'Fira Mono', Monospace;
+  font-size: 15px;
+  border-radius: 10px !important;
+  background-color: rgb(255, 255, 255);
+  line-height: 1.8;
+  color: rgb(0, 0, 0);
+  border-width: 3px;
+  box-shadow: 5px 5px 5px #ff9100!important;
+}
+
+.react-flow__node:focus {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border-width: 3px;
+  
+}
+
+.react-flow__edge-path {
+  stroke-width: 4px;
+  stroke: #040404;
+  z-index: 999;
+}
+
+.react-flow__node:hover {
+  color: rgb(45, 45, 45);
+  transition: background-color 0.8s;
+  background-color: #f1f1f1;
+}
+
+
+.react-flow__node:focus::before {
+  content : "";
+  position: absolute;
+  top: -2px;
+  left: -2px;;
+  right: -2px;
+  bottom: -2px;
+  z-index: -1;
+  border-radius: 10px !important;
+  box-shadow: 0 0 0 5px #ff9100, 0 0 0 6px rgb(0, 0, 0);
+}
+
+
+
+.react-flow__edge-text {
+  font-size: 16px;
+  padding : 5px;
+}
