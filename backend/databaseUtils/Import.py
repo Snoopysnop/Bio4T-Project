@@ -208,13 +208,19 @@ def importation(ip, user, password, file):
     print("Importation terminée :")
     print(res.to_table())
 
-def import_scoring(ip, user, pw, jsonFile):
+def import_scoring(ip, user, pw, jsonCoscore, jsonTrustScore):
     graph_db = Graph(ip, auth=(user, pw))
-    graph_db.run("""CALL apoc.load.json('file:///"""+jsonFile+"""') YIELD value
+    graph_db.run("""CALL apoc.load.json('file:///"""+jsonCoscore+"""') YIELD value
         UNWIND value.items AS item
         MATCH (a:CompatibleTool)-[r:isCompatible]->(b:CompatibleTool)
         WHERE a.toolID=item.tool1 AND b.toolID=item.tool2
         SET r.score = item.score
+        """)
+    graph_db.run("""CALL apoc.load.json('file:///"""+jsonTrustScore+"""') YIELD value
+        UNWIND value.items AS item
+        MATCH (a:CompatibleTool)
+        WHERE a.toolID=item.id
+        SET a.trustScore = item.trust_score
         """)
 
 
