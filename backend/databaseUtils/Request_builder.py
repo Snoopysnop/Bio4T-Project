@@ -93,6 +93,7 @@ class Requete:
         return f"""
         MATCH p = (t1:CompatibleTool)-[:isCompatible *0..{depth}]->(t2:CompatibleTool)
         WHERE "{input}" IN t1.input AND "{output}" IN t2.output
+        AND all(x in nodes(p) WHERE x:CompatibleTool AND size([y IN nodes(p) WHERE y = x]) = 1)
         RETURN apoc.path.elements(p) AS workflows
         """
 
