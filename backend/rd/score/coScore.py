@@ -1,8 +1,8 @@
-
+from pathlib import Path
 
 co_publications = {}
 
-f = open("backend/rd/score/co_publications.json", "r")
+f = open((Path(__file__).parent / "data/co_publications.json").resolve(), "r")
 co_publications = eval(f.read())
 f.close()
 

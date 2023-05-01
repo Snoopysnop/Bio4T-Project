@@ -1,3 +1,4 @@
+from pathlib import Path
 import sys, json
 
 from trustScore import *
@@ -76,7 +77,7 @@ def buildTrustScoreList(tools):
 
 
 
-trustScoreList = buildTrustScoreList(getAllToolsFromJson("backend/data/data.json"))
+trustScoreList = buildTrustScoreList(getAllToolsFromJson((Path(__file__).parent.parent.parent / "data/data.json").resolve()))
 
 f = open("backend/rd/score/trust_scores.json", "w")
 f.write({"items": trustScoreList})

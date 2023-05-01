@@ -1,3 +1,4 @@
+from pathlib import Path
 import sys, json
 from biotools import *
 
@@ -120,6 +121,6 @@ def buildCoPublicationDict(all_publications):
 
 
 
-_all_publications_in_common = buildCoPublicationDict(getAllPublication(getAllToolsFromJson("backend/data/data.json")))
-_f = open("backend/rd/score/co_publications.json", "w")
+_all_publications_in_common = buildCoPublicationDict(getAllPublication(getAllToolsFromJson((Path(__file__).parent.parent.parent / "data/data.json").resolve())))
+_f = open((Path(__file__).parent / "data/co_publications.json").resolve(), "w")
 _f.write(str(_all_publications_in_common))
