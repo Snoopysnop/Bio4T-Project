@@ -90,7 +90,7 @@ def create_app():
 
         utils = create_utils()
         result = utils.request_workflow(input, output, label, depth, limit)
-        
+        print(result)
         result_loop = json.loads(result)
 
         for res in result_loop:

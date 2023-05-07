@@ -29,7 +29,7 @@ function SearchInputBar({inputValue, updateInputValue}: {inputValue: string, upd
     if (selectedOption != null) {
       updateInputValue(selectedOption.value);
     } else {
-      updateInputValue("");
+      updateInputValue(query);
 
     }
   }
