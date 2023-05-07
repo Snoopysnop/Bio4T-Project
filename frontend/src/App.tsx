@@ -234,7 +234,7 @@ export default function App() {
             </div>
 
             <motion.div
-              style={{ opacity: (scrollYProgress.get() * 2.5), marginTop: '10%' }}
+              style={{ opacity: (scrollYProgress.get() * 2.5) }}
             >
               <div id="myModal" className="truemodal" style={{ display: "none" }}>
                 <div className="modal-content">
