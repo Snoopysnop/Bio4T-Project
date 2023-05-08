@@ -136,18 +136,15 @@ header {
   color: #fff;
 
 }
-
-.sticky {
-  
-  position: sticky;
-  top: 17vh;
+.stcky{
 
 }
-
 .moreOption{
   margin: 10px;
+  margin-bottom: -20px;
   color: #5f5f5f;
   z-index: 50;
+  width: 150px;
 }
 
 .error{
@@ -261,8 +258,9 @@ header {
 }
 
 .list{
-  height: 100%;
+  min-height: 40vh;
   width: 100%;
+  margin-bottom: 10vh;
 }
 
 .full #workflow_container{
@@ -287,7 +285,7 @@ header {
 }
 
 .react-flow{
-  height: 150px !important;
+  height: 140px !important;
 }
 
 
@@ -323,7 +321,7 @@ header {
 
 #changeWorkflowDisplay{
   height: fit-content;
-  margin-left: 10px;
+  margin-left: 570px;
   /* position: relative; */
   /* left: 10px; */
   background-image: url(../public/change_icon.png);
@@ -346,7 +344,6 @@ header {
 }
 
 #rfcanva{
-  display: flex;
   justify-content: center;
   width: 100%;
   flex-direction: column-reverse;
@@ -375,6 +372,9 @@ body{
 .flowButton{
   width: fit-content;
   margin-left: auto;
+  display: flex;
+  position: relative;
+  margin-top: -10px;
 }
 
 .flowButton button{

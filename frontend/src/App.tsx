@@ -243,13 +243,14 @@ export default function App() {
                 </div>
               </div>
               <div id="rfcanva">
+                {showResults && <button id="changeWorkflowDisplay" type="button" className="btn btn-secondary btnfont" onClick={changeDisplay}></button>}
+
                 {showResults ?
                   <div style={{ width: "100%" }}>
                     {!carouselVisible && <WorkflowCarousel json={workflow} ></WorkflowCarousel>}
                     {carouselVisible && <WorkflowList json={workflow}></WorkflowList>}
                   </div>
                   : null}
-                {showResults && <button id="changeWorkflowDisplay" type="button" className="btn btn-secondary btnfont" onClick={changeDisplay}></button>}
               </div>
             </motion.div>
           </div>

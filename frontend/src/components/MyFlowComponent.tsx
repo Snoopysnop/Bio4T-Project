@@ -55,6 +55,7 @@ export default function MyFlowComponent(param:ParamType) {
     let exportID = "exp" + param.id
     let ratingID = "rat" + param.id
     let executeID = "exe" + param.id
+    const [panOnScrollMode, setPanOnScrollMode] = useState('free');
 
     //variant = lines cross or dots
     return (
@@ -69,9 +70,6 @@ export default function MyFlowComponent(param:ParamType) {
             // onNodeMouseLeave={invisible}
             onNodeClick={changeVisibility}
             fitView
-            zoomOnScroll={false}
-            zoomOnPinch={false}
-            zoomOnDoubleClick={false}
             panOnDrag={false}
         >
         </ReactFlow>
