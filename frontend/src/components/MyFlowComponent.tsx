@@ -71,6 +71,8 @@ export default function MyFlowComponent(param:ParamType) {
             onNodeClick={changeVisibility}
             fitView
             panOnDrag={false}
+            zoomOnScroll={false}
+            panOnScroll={false}
         >
         </ReactFlow>
         <div className='flowButton'>

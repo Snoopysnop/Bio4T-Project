@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import image from './logo1.png'
 import WorkflowCarousel from './components/WorkflowCarousel';
 import WorkflowList from './components/WorkflowList';
+import { ClipLoader } from 'react-spinners';
 
 export default function App() {
 
@@ -33,21 +34,30 @@ export default function App() {
   const [limit, setLimit] = React.useState<number>(2);
   const [validated, setValidated] = React.useState(false);
   const [carouselVisible, setCarouselVisible] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
 
   async function onClick() {
     if (inputValue == "" || outputValue == "" || labelValue == "") {
+      setShowNoResult(false);
       setShowError(true);
+
       if (validated != true) scrollYProgress.set(0);
 
     }
     else {
+      setLoading(true);
+
       const wf = await ApiForm(inputValue, outputValue, labelValue, depth, limit);
       if (wf == "[]") {
-        setShowNoResult(true);
+        setShowError(false);
+        setLoading(false);
         setShowResults(false);
+        setShowNoResult(true);
+        setTimeout(() => scrollYProgress.set(0), 50);
       }
 
       else {
+        setLoading(false);
         setValidated(true);
         setShowError(false);
         setShowNoResult(false);
@@ -232,11 +242,14 @@ export default function App() {
                 </div>
               )}
             </div>
+            <div className='spinner'>
+              <ClipLoader loading={loading} size={70} color="#fff" />
+            </div>
 
             <motion.div
               style={{ opacity: (scrollYProgress.get() * 2.5) }}
             >
-              <div id="myModal" className="truemodal" style={{ display: "none" }}>
+              <div id="myModal" className="truemodal" style={{ display: "none", top: "100px" }}>
                 <div className="modal-content">
                   <span className="close">&times;</span>
                   <pre></pre>

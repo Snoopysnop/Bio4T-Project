@@ -18,6 +18,8 @@ function SearchInputBar({inputValue, updateInputValue}: {inputValue: string, upd
       setResults(array);
     }
     fetchData();
+    console.log(results)
+
   }, [query]);
 
   function handleInput(input: any) {

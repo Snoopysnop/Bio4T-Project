@@ -238,5 +238,5 @@ if __name__ == "__main__":
     USER = "neo4j"
     PASSWORD = "bio4tdummy"
     print(IP)
-    importation(IP, USER, PASSWORD, "datatest.json")
-    import_scoring(IP, USER, PASSWORD, "output_scoring.json")
+    importation(IP, USER, PASSWORD, "datatest_demo.json")
+    import_scoring(IP, USER, PASSWORD, "output_scoring.json", "trust_scores.json")
