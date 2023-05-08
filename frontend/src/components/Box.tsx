@@ -60,13 +60,13 @@ const Box = (param:BoxType) => {
         <a href={link} target='_blank'><b>{tool_name}</b></a>
         <p>{description}</p>
         <b>Inputs</b>
-        <div style={{display:'flex', overflow:'scroll'}}>{input_list}</div>
+        <div style={{display:'flex', overflow:'auto'}}>{input_list}</div>
         <br />
         <b>Outputs</b>
-        <div style={{display:'flex', overflow:'scroll'}}>{output_list}</div>
+        <div style={{display:'flex', overflow:'auto'}}>{output_list}</div>
         <br />
         <b>Topics</b>
-        <div style={{display:'flex', overflow:'scroll'}}>{topic_list}</div>
+        <div style={{display:'flex', overflow:'auto'}}>{topic_list}</div>
         </div>
     </div>
   );
