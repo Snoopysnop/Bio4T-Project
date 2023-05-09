@@ -1,6 +1,6 @@
 /* Colors */
 :root {
-  --color-default: #0a0d13;
+  --color-default: #2B2B2B;
   --color-primary: #ff9100;
   --color-secondary: #544335;
 }
@@ -22,7 +22,7 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #ffffff00;
+  background-color: var(--color-default);
   /* z-index: 9999; */
 }
 
@@ -135,13 +135,11 @@ header {
   color: #fff;
 
 }
-.stcky{
 
-}
 .moreOption{
   margin: 10px;
   margin-bottom: -20px;
-  color: #5f5f5f;
+  color: #666666;
   z-index: 50;
   width: 150px;
 }
@@ -153,7 +151,7 @@ header {
 
 }
 .error p {
-  color: rgb(190, 0, 0)
+  color: rgb(255, 60, 60)
 }
 .moreOption input{
   padding: 8px;
@@ -364,7 +362,7 @@ header {
 }
 
 body{
-  background-color: #131313 !important;
+  background-color: var(--color-default) !important;
 }
 
 .flowButton{
