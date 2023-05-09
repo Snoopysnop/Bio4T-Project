@@ -67,6 +67,7 @@ export default function MyFlowComponent(param:ParamType) {
         panOnDrag={false}
         zoomOnScroll={false}
         panOnScroll={false}
+        zoomOnPinch={false}
       >
       </ReactFlow>
       <div className='flowButton'>
