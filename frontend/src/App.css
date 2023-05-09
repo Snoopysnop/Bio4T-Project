@@ -38,7 +38,6 @@ header {
 }
 
 .hero {
-  contain: paint;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -224,13 +223,9 @@ header {
 
 
 .reactflowCanva {
-  /*position: relative;*/
   box-shadow: 5px 5px 8px #ff9100;
-  transform: none;
-  /* margin-bottom: 18vh; */
   width: 600px;
   background: #ffffff;
-  /* height: 50vh; */
   border: solid;
   border-color: var(--color-primary);
   border-radius: 10px;

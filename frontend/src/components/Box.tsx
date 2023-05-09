@@ -2,7 +2,6 @@ import React from 'react';
 
 interface BoxType {
     description:any,
-    
     id:any
 }
 
@@ -43,12 +42,12 @@ const Box = (param:BoxType) => {
       zIndex:10,
       backgroundColor: 'white',
       borderRadius: 5,
-      maxHeight: '300px',
+      maxHeight: '250px',
       width: "350px",
       margin:"auto",
       position: 'fixed',
       right: '1vh',
-      top: '50%',
+      bottom: "25%",
       overflowY:'scroll',
       overflowX:'hidden'
 

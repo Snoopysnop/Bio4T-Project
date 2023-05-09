@@ -24,7 +24,6 @@ export default function MyFlowComponent(param:ParamType) {
 
     const [boxVisible, setBoxVisible] = useState(false);
     const [boxDescription, setBoxDescription] = useState('');
-    const [boxPosition, setBoxPosition] = useState({ x: 0, y: 0 });
 
     const changeVisibility = (event : any, node: Node ) => {
         if(last_clicked === node.id){
@@ -49,13 +48,11 @@ export default function MyFlowComponent(param:ParamType) {
     }
     const toggleBox = (event : any, node: Node ) => {
         setBoxDescription(node.data.description);
-        setBoxPosition(node.position);
     };
 
     let exportID = "exp" + param.id
     let ratingID = "rat" + param.id
     let executeID = "exe" + param.id
-    const [panOnScrollMode, setPanOnScrollMode] = useState('free');
 
     //variant = lines cross or dots
     return (
