@@ -42,13 +42,13 @@ const Box = (param:BoxType) => {
       zIndex:10,
       backgroundColor: 'white',
       borderRadius: 5,
-      maxHeight: '250px',
+      maxHeight: '500px',
       width: "350px",
       margin:"auto",
-      position: 'fixed',
+      position: 'absolute',
+      top:"370px",
       right: '1vh',
-      bottom: "25%",
-      overflowY:'scroll',
+      overflowY:'auto',
       overflowX:'hidden'
 
     }}>
