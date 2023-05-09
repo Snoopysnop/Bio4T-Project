@@ -15,5 +15,6 @@ function ncwait(){
 
 }
 
-sudo apt install netcat
+ 
+apt install netcat
 ncwait $1 $2 "$3"
