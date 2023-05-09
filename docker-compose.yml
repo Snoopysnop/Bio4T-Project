@@ -17,7 +17,7 @@ services:
     volumes:
       - ./backend:/usr/local/app/backend
     command: bash -c 
-      "pwd && ls -l && ./wait.sh neo4j 7687 neo4j && cd databaseUtils && python Import.py && python apiFlask.py neo4j 7687"
+      "pwd && ls -l && chmod 777 ./wait.sh && ./wait.sh neo4j 7687 neo4j && cd databaseUtils && python Import.py && python apiFlask.py neo4j 7687"
     depends_on:
       - neo4j
     environment:

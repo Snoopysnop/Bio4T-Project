@@ -59,29 +59,25 @@ export default function MyFlowComponent(param:ParamType) {
 
     //variant = lines cross or dots
     return (
-
-      <div className='flow reactflowCanva' id={param.id}>
-          <ReactFlow
-            nodes={param.nodes}
-            edges={param.edges}
-            style={rfStyle}
-            draggable={false}
-            // onNodeMouseEnter={visible}
-            // onNodeMouseLeave={invisible}
-            onNodeClick={changeVisibility}
-            fitView
-            panOnDrag={false}
-            zoomOnScroll={false}
-            panOnScroll={false}
-        >
-        </ReactFlow>
-        <div className='flowButton'>
-                <button className='export' id={exportID}></button>
-                <button className='rating' id={ratingID}></button>
-                <button className='execute' id={executeID}></button>
-            </div>
-        {boxVisible && <Box id={param.id} description={boxDescription} position={boxPosition} />}
+    <div className='flow reactflowCanva' id={param.id}>
+      <ReactFlow
+        nodes={param.nodes}
+        edges={param.edges}
+        style={rfStyle}
+        draggable={false}
+        onNodeClick={changeVisibility}
+        fitView
+        panOnDrag={false}
+        zoomOnScroll={false}
+        panOnScroll={false}
+      >
+      </ReactFlow>
+      <div className='flowButton'>
+        <button className='export' id={exportID}></button>
+        <button className='rating' id={ratingID}></button>
+        <button className='execute' id={executeID}></button>
       </div>
-
-    );
+        {boxVisible && <Box id={param.id} description={boxDescription} />}
+    </div>
+  );
 };

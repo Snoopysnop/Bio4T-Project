@@ -226,6 +226,7 @@ header {
 .reactflowCanva {
   /*position: relative;*/
   box-shadow: 5px 5px 8px #ff9100;
+  transform: none;
   /* margin-bottom: 18vh; */
   width: 600px;
   background: #ffffff;
@@ -280,6 +281,7 @@ header {
   width: 100%;
   min-width: -webkit-fill-available;
   min-width: -moz-available;
+  transform: none;
 }
 
 .react-flow__node{

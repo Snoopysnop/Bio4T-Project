@@ -176,7 +176,7 @@ export default function App() {
                 <h2 data-aos="fade-up" data-aos-delay="100">All your tools on hand</h2>
                 <p data-aos="fade-up" data-aos-delay="100">Bio4T is an advanced <strong>search engine</strong> made for biologists.<br />
                   Find all the tools you need with <strong>workflows</strong> made from a big database.<br />
-                  Select an <strong>input</strong>, an <strong>output</strong> and optionnaly a <strong>topic</strong> to start.</p>
+                  Select an <strong>input</strong>, an <strong>output</strong> and a <strong>topic</strong> to start.</p>
               </div>
             </div>
           </motion.div>
@@ -249,7 +249,7 @@ export default function App() {
             <motion.div
               style={{ opacity: (scrollYProgress.get() * 2.5) }}
             >
-              <div id="myModal" className="truemodal" style={{ display: "none", top: "100px" }}>
+              <div id="myModal" className="truemodal" style={{ display: "none"}}>
                 <div className="modal-content">
                   <span className="close">&times;</span>
                   <pre></pre>
